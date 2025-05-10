@@ -57,19 +57,4 @@ const styles = StyleSheet.create({
     color: Colors.blanco,
     fontSize: 12,
   },
-  generosContenedor: {
-    flexDirection: "row",
-    paddingHorizontal: 10,
-    paddingBottom: 8,
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    gap: 10
-  },
-  genero: {
-    backgroundColor: Colors.grisOscuro,
-    padding: 4
-  },
-  generoText: {
-    color: Colors.blanco,
-  },
 });
