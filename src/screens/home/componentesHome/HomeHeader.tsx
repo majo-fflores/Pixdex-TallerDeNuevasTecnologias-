@@ -46,7 +46,8 @@ const styles = StyleSheet.create({
   container: {
     height: height,
     color: Colors.fondo,
-    padding: 20,
+    padding: 10,
+    paddingVertical: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -71,6 +72,7 @@ const styles = StyleSheet.create({
   },
   botonTexto: {
     color: Colors.blanco,
-    fontSize: botonSize
+    fontSize: botonSize,
+    padding: 5,
   }
 });

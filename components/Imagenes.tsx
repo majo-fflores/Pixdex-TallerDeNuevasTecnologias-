@@ -1,6 +1,6 @@
 import Colors from '@/constants/Colors';
 import { Image } from "expo-image";
-import { Dimensions, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 
 
 interface ImagenProps {
@@ -19,14 +19,11 @@ export default function Imagen({ url }: ImagenProps) {
     )
 }
 
-const WIDTH = Dimensions.get("window").width * 0.2;
-const HEIGTH = WIDTH * 1.5;
-
 // Styles
 const styles = StyleSheet.create({
     stylesImage: {
         width: "100%",
-        height: HEIGTH,
+        aspectRatio: 2 / 3,
         backgroundColor: Colors.grisOscuro,
     },
 });

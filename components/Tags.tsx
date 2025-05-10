@@ -26,6 +26,6 @@ const styles = StyleSheet.create({
         padding: 4
     },
     generoText: {
-        color: "#fff"
+        color: Colors.blanco
     }
 });
