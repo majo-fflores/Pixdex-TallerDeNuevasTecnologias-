@@ -1,4 +1,5 @@
 import Colors from '@/constants/Colors';
+import { MaterialIcons } from "@expo/vector-icons";
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { TextPressStart2P } from './TextPressStart2P';
@@ -15,7 +16,7 @@ export function BackButton({ title, onPress, backgroundColor = Colors.purpura }:
       style={[styles.button, { backgroundColor }]}
       onPress={onPress}
       activeOpacity={0.5}>
-      <TextPressStart2P style={styles.buttonText}>{title}</TextPressStart2P>
+      <TextPressStart2P style={styles.buttonText}><MaterialIcons name='arrow-back'/>{title}</TextPressStart2P>
     </TouchableOpacity>
   );
 }

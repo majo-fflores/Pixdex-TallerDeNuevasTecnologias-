@@ -16,7 +16,7 @@ export default function DetailScreen({ audioVisualId }: DetailScreenProps) {
                 <HeaderDetail />
             </View>
             {
-                Platform.OS === "web" ? ( //CAMBIAR ESTO
+                Platform.OS === "web" ? ( 
                     <View style={{ alignSelf: "center" }}>
                         <CardDetail audioVisualId={audioVisualId} />
                     </View>

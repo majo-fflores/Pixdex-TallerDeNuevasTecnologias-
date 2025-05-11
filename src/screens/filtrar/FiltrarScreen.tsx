@@ -1,21 +1,26 @@
 import Colors from '@/constants/Colors';
+import { ROUTES } from "@/src/navigation/routes";
 import { useRouter } from "expo-router";
 import { StyleSheet, View } from "react-native";
 import { BackButton } from "../../../components/BackButton";
 import { TextPressStart2P } from "../../../components/TextPressStart2P";
 
-export default function FiltrarScreen() {
+export default function PixelRevealScreen() {
     const router = useRouter();
     const handleBack = () => {
-        router.back();
+        router.push(ROUTES.HOME);
     };
 
     return (
         <View style={[styles.container]}>
-            <BackButton
-                title=" Back"
-                onPress={handleBack} />
-            <TextPressStart2P style={styles.titulo}>FILTRADO DE AUDIOVISUAL</TextPressStart2P>
+
+            <View style={styles.contenedorHeader}>
+                <BackButton title=" Back" onPress={handleBack} />
+            </View>
+            
+            <View style={[styles.containerTitulo]}>
+                <TextPressStart2P style={styles.titulo}>FILTRADO DE AUDIOVISUAL</TextPressStart2P>
+            </View>
         </View>
     )
 }
@@ -25,15 +30,23 @@ export default function FiltrarScreen() {
 //------------------
 const styles = StyleSheet.create({
     titulo: {
-        color: Colors.purpuraOscuro,
+        color: Colors.verde,
         fontSize: 24,
+        textAlign: 'center',
     },
     container: {
-        height: 100,
-        color: Colors.fondo,
+        flex: 1,
+        backgroundColor: Colors.fondo,
         padding: 20,
-        flexDirection: 'row',
+        flexDirection: 'column',
+    },
+    contenedorHeader: {
+        alignItems: "flex-start",
+    },
+    containerTitulo: {
+        width: '100%',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
+        flex:1
     },
 });

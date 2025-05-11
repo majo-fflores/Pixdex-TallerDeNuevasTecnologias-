@@ -13,10 +13,14 @@ export default function PixelRevealScreen() {
 
     return (
         <View style={[styles.container]}>
-            <BackButton
-                title=" Back"
-                onPress={handleBack} />
-            <TextPressStart2P style={styles.titulo}>EL JUEGO DE PIXEL REVEAL</TextPressStart2P>
+
+            <View style={styles.contenedorHeader}>
+                <BackButton title=" Back" onPress={handleBack} />
+            </View>
+            
+            <View style={[styles.containerTitulo]}>
+                <TextPressStart2P style={styles.titulo}>EL JUEGO DE PIXEL REVEAL</TextPressStart2P>
+            </View>
         </View>
     )
 }
@@ -28,13 +32,21 @@ const styles = StyleSheet.create({
     titulo: {
         color: Colors.verde,
         fontSize: 24,
+        textAlign: 'center',
     },
     container: {
-        height: 100,
-        color: Colors.fondo,
+        flex: 1,
+        backgroundColor: Colors.fondo,
         padding: 20,
-        flexDirection: 'row',
+        flexDirection: 'column',
+    },
+    contenedorHeader: {
+        alignItems: "flex-start",
+    },
+    containerTitulo: {
+        width: '100%',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
+        flex:1
     },
 });

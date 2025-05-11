@@ -19,11 +19,11 @@ export default function CardDetail({ audioVisualId }: DetailScreenProps) {
         (tipoID) => tipoID.id === (tipoAudioVisualId ? tipoAudioVisualId.tipoId : undefined)
     );
 
-    const contenido: ContenidoAudiovisual | undefined = contenidosAudiovisuales.find(
-        (datoID) => datoID.id === Number(audioVisualId)
+    const contenidoInfo: ContenidoAudiovisual | undefined = contenidosAudiovisuales.find(
+        (contenidoInfoID) => contenidoInfoID.id === Number(audioVisualId)
     );
 
-    const generos = contenido?.generos.map((id) =>
+    const generos = contenidoInfo?.generos.map((id) =>
         generosContenidoAudiovisual.find((g) => g.id === id)
     );
 
@@ -33,15 +33,15 @@ export default function CardDetail({ audioVisualId }: DetailScreenProps) {
     
     return (
         <View style={[styles.contenedor, { width: CARD_WIDTH }]}>
-            {contenido && <Imagenes url={contenido.imageUrl}/>}
+            {contenidoInfo && <Imagenes url={contenidoInfo.imageUrl}/>}
             <TextPressStart2P style={styles.tituloCard}>
-                {contenido?.nombre}
+                {contenidoInfo?.nombre}
             </TextPressStart2P>
             <View style={styles.generosContenedor}>
                 {tipo && <Tags texto={tipo.singular} />}
             </View>
             <View style={styles.contenedorDescripcion} >
-                <Text style={styles.generoText} numberOfLines={4}>{contenido?.descripcion}</Text>
+                <Text style={styles.generoText} numberOfLines={4}>{contenidoInfo?.descripcion}</Text>
             </View>
             <View style={styles.contenedorGeneroEtiqueta}>
                 <TextPressStart2P style={styles.etiquetaGenero}>
