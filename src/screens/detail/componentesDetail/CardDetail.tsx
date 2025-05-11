@@ -6,7 +6,7 @@ import Colors from "@/constants/Colors";
 import { ContenidoAudiovisual, contenidosAudiovisuales } from "@/data/contenidosAudiovisuales";
 import { generosContenidoAudiovisual, IGeneroContenidoAudiovisual } from "@/data/generosContenidoAudiovisual";
 import { ITipoContenidoAudiovisual, tiposContenidoAudiovisual } from "@/data/tiposContenidoAudiovisual";
-import { Platform, StyleSheet, Text, View } from "react-native";
+import { Platform, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import { DetailScreenProps } from "../DetailScreen";
 
 
@@ -27,8 +27,12 @@ export default function CardDetail({ audioVisualId }: DetailScreenProps) {
         generosContenidoAudiovisual.find((g) => g.id === id)
     );
 
+    const { width: screenWidth } = useWindowDimensions();
+    const widthFactor = Platform.OS === 'web' ? 0.4 : 0.9;
+    const CARD_WIDTH = screenWidth * widthFactor;
+    
     return (
-        <View style={styles.contenedor}>
+        <View style={[styles.contenedor, { width: CARD_WIDTH }]}>
             {contenido && <Imagenes url={contenido.imageUrl}/>}
             <TextPressStart2P style={styles.tituloCard}>
                 {contenido?.nombre}
