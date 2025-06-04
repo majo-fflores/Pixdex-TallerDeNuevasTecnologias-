@@ -1,6 +1,6 @@
 import { useRouter } from "expo-router";
 import { StatusBar, StyleSheet, View } from "react-native";
-import { BackButton } from "../../../../components/BackButton";
+import { Buttons } from "../../../../components/Buttons";
 
 export default function DetailHeader() {
     const router = useRouter();
@@ -11,7 +11,7 @@ export default function DetailHeader() {
     return (
         <View style={styles.contenedorHeader}>
             <StatusBar backgroundColor="rgba(0,0,0,0.9)" barStyle="light-content" />
-            <BackButton title=" Back" onPress={handleBack} />
+            <Buttons titulo=" Back" onPress={handleBack} />
         </View>
     )
 

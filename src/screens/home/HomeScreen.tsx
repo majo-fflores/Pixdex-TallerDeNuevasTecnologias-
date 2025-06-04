@@ -1,14 +1,15 @@
 import Colors from '@/constants/Colors';
 import { ROUTES } from "@/src/navigation/routes";
-import { ScrollView, StatusBar, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { AudioVisualScroll } from "./componentesHome/AudioVisualScroll";
 import { GameButton } from "./componentesHome/GameButton";
 import { HomeHeader } from "./componentesHome/HomeHeader";
 
 export function HomeScreen() {
   return (
+    <SafeAreaView edges={['top']} style={styles.screenContainer}>
     <ScrollView style={styles.screenContainer}>
-      <StatusBar backgroundColor="rgba(0,0,0,0.9)" barStyle="light-content" />
       <HomeHeader />
       <View style={styles.buttonRow}>
         <GameButton
@@ -30,6 +31,7 @@ export function HomeScreen() {
         <AudioVisualScroll tipoId={3} />
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 }
 

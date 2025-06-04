@@ -2,7 +2,7 @@ import Colors from '@/constants/Colors';
 import { ROUTES } from "@/src/navigation/routes";
 import { useRouter } from "expo-router";
 import { StyleSheet, View } from "react-native";
-import { BackButton } from "../../../components/BackButton";
+import { Buttons } from "../../../components/Buttons";
 import { TextPressStart2P } from "../../../components/TextPressStart2P";
 
 export default function PixelRevealScreen() {
@@ -15,7 +15,7 @@ export default function PixelRevealScreen() {
         <View style={[styles.container]}>
 
             <View style={styles.contenedorHeader}>
-                <BackButton title=" Back" onPress={handleBack} />
+                <Buttons titulo=" Back" onPress={handleBack} />
             </View>
             
             <View style={[styles.containerTitulo]}>
