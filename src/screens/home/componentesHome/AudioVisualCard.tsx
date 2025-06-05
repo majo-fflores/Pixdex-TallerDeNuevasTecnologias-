@@ -1,5 +1,5 @@
 import Colors from '@/constants/Colors';
-import { ContenidoAudiovisual } from "@/data/contenidosAudiovisuales";
+import { IContenidoAudiovisual } from "@/data/contenidosAudiovisuales";
 import { generosContenidoAudiovisual, IGeneroContenidoAudiovisual } from "@/data/generosContenidoAudiovisual";
 import { useRouter } from "expo-router";
 import React from "react";
@@ -9,7 +9,7 @@ import Imagenes from '../../../../components/Imagenes';
 import { TextPressStart2P } from "../../../../components/TextPressStart2P";
 
 interface AudioVisualCardProps {
-  itemCard: ContenidoAudiovisual;
+  itemCard: IContenidoAudiovisual;
   fixedHeight?:number;
   onMeasure?:(height:number)=>void;
 }

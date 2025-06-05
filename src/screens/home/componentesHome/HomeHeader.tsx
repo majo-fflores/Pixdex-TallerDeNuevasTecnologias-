@@ -36,7 +36,6 @@ if (Platform.OS == "android") {
   logoSize = 24
 }
 
-
 //------------------
 // Styles
 //------------------
@@ -54,5 +53,4 @@ const styles = StyleSheet.create({
     color: Colors.purpura,
     fontSize: logoSize,
   },
-  
 });

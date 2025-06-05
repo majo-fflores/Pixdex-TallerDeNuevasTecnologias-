@@ -1,5 +1,5 @@
 import Colors from '@/constants/Colors';
-import { ContenidoAudiovisual, contenidosAudiovisuales } from "@/data/contenidosAudiovisuales";
+import { IContenidoAudiovisual, contenidosAudiovisuales } from "@/data/contenidosAudiovisuales";
 import { ITipoContenidoAudiovisual, tiposContenidoAudiovisual } from "@/data/tiposContenidoAudiovisual";
 import React, { useState } from "react";
 import { FlatList, Platform, StyleSheet, View } from "react-native";
@@ -15,7 +15,7 @@ export function AudioVisualScroll({ tipoId }: AudioVisualScrollProps) {
         (tipoID) => tipoID.id === tipoId
     );
 
-    const contenido: ContenidoAudiovisual[] = contenidosAudiovisuales.filter(
+    const contenido: IContenidoAudiovisual[] = contenidosAudiovisuales.filter(
         (contenidoID) => contenidoID.tipoId === tipo?.id
     );
 

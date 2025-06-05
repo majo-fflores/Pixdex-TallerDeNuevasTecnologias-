@@ -3,7 +3,7 @@ import Imagenes from "@/components/Imagenes";
 import Tags from "@/components/Tags";
 import { TextPressStart2P } from "@/components/TextPressStart2P";
 import Colors from "@/constants/Colors";
-import { ContenidoAudiovisual, contenidosAudiovisuales } from "@/data/contenidosAudiovisuales";
+import { contenidosAudiovisuales, IContenidoAudiovisual } from "@/data/contenidosAudiovisuales";
 import { generosContenidoAudiovisual, IGeneroContenidoAudiovisual } from "@/data/generosContenidoAudiovisual";
 import { ITipoContenidoAudiovisual, tiposContenidoAudiovisual } from "@/data/tiposContenidoAudiovisual";
 import { Platform, StyleSheet, Text, useWindowDimensions, View } from "react-native";
@@ -11,7 +11,7 @@ import { DetailScreenProps } from "../DetailScreen";
 
 
 export default function CardDetail({ audioVisualId }: DetailScreenProps) {
-    const tipoAudioVisualId: ContenidoAudiovisual | undefined = contenidosAudiovisuales.find(
+    const tipoAudioVisualId: IContenidoAudiovisual | undefined = contenidosAudiovisuales.find(
         (contenido) => contenido.id === Number(audioVisualId)
     );
 
@@ -19,7 +19,7 @@ export default function CardDetail({ audioVisualId }: DetailScreenProps) {
         (tipoID) => tipoID.id === (tipoAudioVisualId ? tipoAudioVisualId.tipoId : undefined)
     );
 
-    const contenidoInfo: ContenidoAudiovisual | undefined = contenidosAudiovisuales.find(
+    const contenidoInfo: IContenidoAudiovisual | undefined = contenidosAudiovisuales.find(
         (contenidoInfoID) => contenidoInfoID.id === Number(audioVisualId)
     );
 
