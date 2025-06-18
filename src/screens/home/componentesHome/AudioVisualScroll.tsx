@@ -1,29 +1,36 @@
 import Colors from '@/constants/Colors';
-import { IContenidoAudiovisual, contenidosAudiovisuales } from "@/data/contenidosAudiovisuales";
-import { ITipoContenidoAudiovisual, tiposContenidoAudiovisual } from "@/data/tiposContenidoAudiovisual";
+import { IContenidoAudiovisual } from "@/data/contenidosAudiovisuales";
+import { useAudioVisual } from '@/src/context/ContextoAudioVisual';
 import React, { useState } from "react";
 import { FlatList, Platform, StyleSheet, View } from "react-native";
 import { TextPressStart2P } from "../../../../components/TextPressStart2P";
 import { AudioVisualCard } from "./AudioVisualCard";
 
 interface AudioVisualScrollProps {
-    tipoId: number,
+    tipoId: number;
+    filteredContent?: IContenidoAudiovisual[]; 
 }
 
-export function AudioVisualScroll({ tipoId }: AudioVisualScrollProps) {
-    const tipo: ITipoContenidoAudiovisual | undefined = tiposContenidoAudiovisual.find(
-        (tipoID) => tipoID.id === tipoId
-    );
+export function AudioVisualScroll({ tipoId, filteredContent }: AudioVisualScrollProps) {
+    
+    //uso el contesto para obtener la info del tipo
+    const { getTipoId, getContenidosTipo} = useAudioVisual();
+    
+    const tipo = getTipoId(tipoId);
 
-    const contenido: IContenidoAudiovisual[] = contenidosAudiovisuales.filter(
-        (contenidoID) => contenidoID.tipoId === tipo?.id
-    );
+    // Usar contenido filtrado si se proporciona, sino usar el filtro original
+    const contenido: IContenidoAudiovisual[] = filteredContent || getContenidosTipo(tipoId);
 
     const [maxCardHeight, setMaxCardHeight] = useState(0);
 
     const handleMeasure = (height: number) => {
         if (height > maxCardHeight) setMaxCardHeight(height);
     };
+
+    // No renderizar si no hay contenido
+    if (contenido.length === 0) {
+        return null;
+    }
 
     return (
         <View style={styles.contenedor}>

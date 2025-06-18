@@ -5,5 +5,4 @@ export const ROUTES: Record<string, Href> = {
     DETAIL: "/detail/",
     AHORCADO: "/ahorcado",
     PIXEL_REVEAL: "/pixelReveal",
-    FILTRAR: "/filtrar",
 };

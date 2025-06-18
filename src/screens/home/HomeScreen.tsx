@@ -1,17 +1,49 @@
 import Colors from '@/constants/Colors';
-import { tiposContenidoAudiovisual } from '@/data/tiposContenidoAudiovisual';
+import { useAudioVisual } from '@/src/context/ContextoAudioVisual';
 import { ROUTES } from "@/src/navigation/routes";
+import React, { useMemo, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { FilterModal, FilterOptions } from "../../../components/FilterModal";
 import { AudioVisualScroll } from "./componentesHome/AudioVisualScroll";
 import { GameButton } from "./componentesHome/GameButton";
 import { HomeHeader } from "./componentesHome/HomeHeader";
 
 export function HomeScreen() {
+  const {tipos,filtrarContenidos} = useAudioVisual(); //aqui uso el contexto
+
+  const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
+  const [filters, setFilters] = useState<FilterOptions>({
+    seleccionarTipos: tipos.map(tipo => tipo.id), // Todos seleccionados por defecto
+    seleccionarGeneros: [] // Ninguno seleccionado por defecto
+  });
+
+  // funcion para filtrar contenido usando el contexto
+  const filteredContent = useMemo(() => {
+    return filtrarContenidos(filters.seleccionarTipos, filters.seleccionarGeneros);
+  },[filters,filtrarContenidos]);
+
+  // funcion para obtener contenido filtrado por tipo
+  const getFilteredContentType = (tipoId: number) => {
+    return filteredContent.filter(item => item.tipoId === tipoId);
+  };
+
+  const handleOpenFilterModal = () => {
+    setIsFilterModalVisible(true);
+  };
+
+  const handleCloseFilterModal = () => {
+    setIsFilterModalVisible(false);
+  };
+
+  const handleApplyFilters = (newFilters: FilterOptions) => {
+    setFilters(newFilters);
+  };
+
   return (
     <SafeAreaView edges={['top']} style={styles.screenContainer}>
       <ScrollView style={styles.screenContainer}>
-        <HomeHeader />
+        <HomeHeader onFilterPress={handleOpenFilterModal} />
         <View style={styles.buttonRow}>
           <GameButton
             title="Desafío del Ahorcado"
@@ -27,9 +59,28 @@ export function HomeScreen() {
           />
         </View>
         <View style={styles.contenedorScroll}>
-          {tiposContenidoAudiovisual.map((tipo) => (<AudioVisualScroll key={tipo.id} tipoId={tipo.id} />))}
+          {tipos
+            .filter(tipo => filters.seleccionarTipos.includes(tipo.id)) // Solo mostrar tipos seleccionados
+            .map((tipo) => {
+              const contentForType = getFilteredContentType(tipo.id);
+              // Solo mostrar la sección si hay contenido
+              return contentForType.length > 0 ? (
+                <AudioVisualScroll 
+                  key={tipo.id} 
+                  tipoId={tipo.id} 
+                  filteredContent={contentForType}
+                />
+              ) : null;
+            })}
         </View>
       </ScrollView>
+
+      <FilterModal
+        visible={isFilterModalVisible}
+        onClose={handleCloseFilterModal}
+        onApplyFilters={handleApplyFilters}
+        initialFilters={filters}
+      />
     </SafeAreaView>
   );
 }

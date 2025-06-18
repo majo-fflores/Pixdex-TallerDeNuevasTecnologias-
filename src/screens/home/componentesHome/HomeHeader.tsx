@@ -1,22 +1,19 @@
 import { Buttons } from '@/components/Buttons';
 import Colors from '@/constants/Colors';
-import { ROUTES } from "@/src/navigation/routes";
-import { router } from 'expo-router';
 import { Platform, StyleSheet, View } from "react-native";
 import { TextPressStart2P } from "../../../../components/TextPressStart2P";
 
+interface HomeHeaderProps {
+  onFilterPress: () => void;
+}
 
-export function HomeHeader() {
-  const handleNavigateToFiltrar = () => {
-    router.push(ROUTES.FILTRAR);
-  };
-
+export function HomeHeader({ onFilterPress }: HomeHeaderProps) {
   return (
     <View style={[styles.container]}>
       <TextPressStart2P style={styles.logo}>Pixdex</TextPressStart2P>
       <Buttons
         titulo="FILTRAR"
-        onPress={handleNavigateToFiltrar}
+        onPress={onFilterPress}
         iconName="settings"
         iconSize={Platform.OS === "android" ? 20 : 24}
         textSize={Platform.OS === "android" ? 10 : 14}

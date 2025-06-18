@@ -1,6 +1,6 @@
 import Colors from '@/constants/Colors';
 import { IContenidoAudiovisual } from "@/data/contenidosAudiovisuales";
-import { generosContenidoAudiovisual, IGeneroContenidoAudiovisual } from "@/data/generosContenidoAudiovisual";
+import { useAudioVisual } from '@/src/context/ContextoAudioVisual';
 import { useRouter } from "expo-router";
 import React from "react";
 import { LayoutChangeEvent, Platform, StyleSheet, TouchableOpacity, useWindowDimensions, View } from "react-native";
@@ -10,15 +10,18 @@ import { TextPressStart2P } from "../../../../components/TextPressStart2P";
 
 interface AudioVisualCardProps {
   itemCard: IContenidoAudiovisual;
-  fixedHeight?:number;
-  onMeasure?:(height:number)=>void;
+  fixedHeight?: number;
+  onMeasure?: (height: number) => void;
 }
 
 export function AudioVisualCard({ itemCard, fixedHeight, onMeasure }: AudioVisualCardProps) {
+
+  const { getGenerosContenido } = useAudioVisual();
+
   const { width: screenWidth } = useWindowDimensions();
   const widthFactor = Platform.OS === 'web' ? 0.2 : 0.5;
   const CARD_WIDTH = screenWidth * widthFactor;
-  
+
   const router = useRouter();
   const handlePress = () => {
     router.push({
@@ -27,15 +30,13 @@ export function AudioVisualCard({ itemCard, fixedHeight, onMeasure }: AudioVisua
     });
   }
 
-  const generos = itemCard.generos.map((id) =>
-    generosContenidoAudiovisual.find((genero) => genero.id === id)
-  );
+  const generos = getGenerosContenido(itemCard);
 
   return (
     <TouchableOpacity activeOpacity={0.5} onPress={handlePress}>
-      <View style={[styles.contenedor,{ width: CARD_WIDTH },fixedHeight != null? {minHeight: fixedHeight}: undefined]} onLayout={(e:LayoutChangeEvent) => {
-        const{height} = e.nativeEvent.layout;
-        if(onMeasure) onMeasure(height);
+      <View style={[styles.contenedor, { width: CARD_WIDTH }, fixedHeight != null ? { minHeight: fixedHeight } : undefined]} onLayout={(e: LayoutChangeEvent) => {
+        const { height } = e.nativeEvent.layout;
+        if (onMeasure) onMeasure(height);
       }}>
         {itemCard && <Imagenes url={itemCard.imageUrl} />}
         <View>
@@ -43,7 +44,7 @@ export function AudioVisualCard({ itemCard, fixedHeight, onMeasure }: AudioVisua
             {itemCard.nombre}
           </TextPressStart2P>
         </View>
-        <GeneroList generos={generos?.filter((g): g is IGeneroContenidoAudiovisual => g !== undefined) || []} />
+        <GeneroList generos={generos} />
       </View>
     </TouchableOpacity>
   );

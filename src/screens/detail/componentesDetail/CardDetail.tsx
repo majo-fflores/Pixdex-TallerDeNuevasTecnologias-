@@ -3,29 +3,19 @@ import Imagenes from "@/components/Imagenes";
 import Tags from "@/components/Tags";
 import { TextPressStart2P } from "@/components/TextPressStart2P";
 import Colors from "@/constants/Colors";
-import { contenidosAudiovisuales, IContenidoAudiovisual } from "@/data/contenidosAudiovisuales";
-import { generosContenidoAudiovisual, IGeneroContenidoAudiovisual } from "@/data/generosContenidoAudiovisual";
-import { ITipoContenidoAudiovisual, tiposContenidoAudiovisual } from "@/data/tiposContenidoAudiovisual";
+import { useAudioVisual } from "@/src/context/ContextoAudioVisual";
 import { Platform, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import { DetailScreenProps } from "../DetailScreen";
 
 
 export default function CardDetail({ audioVisualId }: DetailScreenProps) {
-    const tipoAudioVisualId: IContenidoAudiovisual | undefined = contenidosAudiovisuales.find(
-        (contenido) => contenido.id === Number(audioVisualId)
-    );
+    
+    //uso el contexto
+    const { getContenidoId, getTipoId, getGenerosContenido} = useAudioVisual();
 
-    const tipo: ITipoContenidoAudiovisual | undefined = tiposContenidoAudiovisual.find(
-        (tipoID) => tipoID.id === (tipoAudioVisualId ? tipoAudioVisualId.tipoId : undefined)
-    );
-
-    const contenidoInfo: IContenidoAudiovisual | undefined = contenidosAudiovisuales.find(
-        (contenidoInfoID) => contenidoInfoID.id === Number(audioVisualId)
-    );
-
-    const generos = contenidoInfo?.generos.map((id) =>
-        generosContenidoAudiovisual.find((g) => g.id === id)
-    );
+    const contenidoInfo =  getContenidoId(Number(audioVisualId))
+    const tipo = contenidoInfo?getTipoId(contenidoInfo.tipoId):undefined
+    const generos = contenidoInfo?getGenerosContenido(contenidoInfo):[];
 
     const { width: screenWidth } = useWindowDimensions();
     const widthFactor = Platform.OS === 'web' ? 0.4 : 0.9;
@@ -48,7 +38,7 @@ export default function CardDetail({ audioVisualId }: DetailScreenProps) {
                     Generos
                 </TextPressStart2P>
             </View>
-            <GeneroList generos={generos?.filter((g): g is IGeneroContenidoAudiovisual => g !== undefined) || []}/>
+            <GeneroList generos={generos}/>
         </View>
     )
 }
