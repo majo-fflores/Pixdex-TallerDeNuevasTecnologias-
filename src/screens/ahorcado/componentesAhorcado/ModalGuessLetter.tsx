@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   modalContainer: {
     backgroundColor: Colors.fondo,
     borderWidth: 2,
-    borderColor: Colors.purpuraClaro,
+    borderColor: Colors.grisOscuro,
     width: "90%",
     maxWidth: 400,
     padding: 20,
@@ -93,7 +93,6 @@ const styles = StyleSheet.create({
   },
   letterButton: {
     backgroundColor: Colors.purpura,
-    borderRadius: 4,
     margin: 4,
     padding: 10,
     minWidth: 36,

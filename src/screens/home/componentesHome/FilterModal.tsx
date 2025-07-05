@@ -4,7 +4,7 @@ import { useAudioVisual } from '@/src/context/ContextoAudioVisual';
 import { MaterialIcons } from '@expo/vector-icons';
 import React, { useState, useEffect } from 'react';
 import { Modal, Platform, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { TextPressStart2P } from './TextPressStart2P';
+import { TextPressStart2P } from '@/components/TextPressStart2P';
 
 const isMobile = Platform.OS === "android" || Platform.OS === "ios";
 
@@ -266,8 +266,4 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flex: 0.5,
   },
-});
-
-function setSelectedTypes(arg0: (prev: any) => any) {
-  throw new Error('Function not implemented.');
-}
+}); 

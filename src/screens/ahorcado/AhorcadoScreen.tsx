@@ -38,6 +38,12 @@ export function AhorcadoScreen() {
   const [inputTitulo, setInputTitulo] = useState("");
   const [gano, setGano] = useState(false);
 
+  // Funcion para limpiar el input y abrir el modal
+  const handleAbrirModalTitulo = () => {
+    setInputTitulo("");
+    setMostrarModalTitulo(true);
+  };
+
   // Progreso: array de letras y guiones bajos
   const progreso = useMemo(() => {
     if (!contenidoActual) return [];
@@ -124,7 +130,7 @@ export function AhorcadoScreen() {
         <View style={styles.botonesRow}>
           <Buttons
             titulo="GUESS TITLE"
-            onPress={() => setMostrarModalTitulo(true)}
+            onPress={handleAbrirModalTitulo}
             backgroundColor={Colors.purpura}
             showIcon={false}
             textSize={12}
@@ -138,7 +144,7 @@ export function AhorcadoScreen() {
             textSize={12}
             padding={10}
           />
-        </View>
+            </View>
         <AhorcadoImagen url={String(contenidoActual.imageUrl)} />
         <View style={styles.rayitasBox}>
           <AhorcadoProgreso progreso={progreso} />
@@ -202,5 +208,5 @@ const styles = StyleSheet.create({
     padding: Platform.OS === "web" ? 20 : 10,
     marginTop: Platform.OS === "web" ? 30 : 20,
     alignItems: "center",
-  },
+    },
 });

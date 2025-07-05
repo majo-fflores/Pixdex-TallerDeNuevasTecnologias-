@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     color: Colors.blanco,
     fontSize: 24,
     marginBottom: 10,
+    textAlign: 'center',
   },
   resultado: {
     color: Colors.verde,
@@ -49,5 +50,8 @@ const styles = StyleSheet.create({
     color: Colors.blanco,
     fontSize: 16,
     marginBottom: 20,
+    marginHorizontal:30,
+    textAlign: 'center',
+    lineHeight: 40
   },
 }); 

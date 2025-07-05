@@ -7,6 +7,7 @@ const Colors = {
   grisOscuro: '#403E43',
   blanco: '#fff',
   rojo: '#8b0000',
+  negro: '0000'
 };
 
 export default Colors;

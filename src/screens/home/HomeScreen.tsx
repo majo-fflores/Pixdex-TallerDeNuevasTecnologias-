@@ -4,7 +4,7 @@ import { ROUTES } from "@/src/navigation/routes";
 import React, { useMemo, useState, useEffect } from "react";
 import { ScrollView, StyleSheet, View, Text } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FilterModal, FilterOptions } from "../../../components/FilterModal";
+import { FilterModal, FilterOptions } from "./componentesHome/FilterModal";
 import { AudioVisualScroll } from "./componentesHome/AudioVisualScroll";
 import { GameButton } from "./componentesHome/GameButton";
 import { HomeHeader } from "./componentesHome/HomeHeader";

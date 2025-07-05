@@ -32,16 +32,25 @@ export function ModalGuessTitle({
             value={value}
             onChangeText={onChange}
             placeholder="Enter complete title"
+            placeholderTextColor={Colors.grisOscuro}
             style={styles.input}
             autoFocus
           />
-          <Buttons
-            titulo="SUBMIT GUESS"
-            onPress={onSubmit}
-            backgroundColor={Colors.purpura}
-            showIcon={false}
-            textSize={14}
-          />
+          <View style={styles.buttonContainer}>
+            <Buttons
+              titulo="SUBMIT GUESS"
+              onPress={onSubmit}
+              backgroundColor={Colors.purpura}
+              showIcon={false}
+              textSize={14}
+              borderWidth={2}
+              borderTopColor={Colors.verde}
+              borderLeftColor={Colors.verde}
+              borderBottomColor={Colors.verde}
+              borderRightColor={Colors.verde}
+              padding={12}
+            />
+          </View>
         </View>
       </View>
     </Modal>
@@ -51,18 +60,22 @@ export function ModalGuessTitle({
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.8)",
+    backgroundColor: "rgba(26, 31, 44, 0.95)",
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
   },
   modalContainer: {
     backgroundColor: Colors.fondo,
-    borderWidth: 2,
-    borderColor: Colors.purpuraClaro,
+    borderWidth: 3,
+    borderColor: Colors.grisOscuro,
     width: "90%",
     maxWidth: 400,
     padding: 20,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 10,
+    elevation: 20,
   },
   header: {
     flexDirection: "row",
@@ -73,16 +86,24 @@ const styles = StyleSheet.create({
   title: {
     color: Colors.blanco,
     fontSize: 18,
+    textShadowColor: Colors.purpuraClaro,
+    textShadowRadius: 4,
   },
   closeButton: {
-    padding: 5,
+    padding: 1
   },
   input: {
-    backgroundColor: Colors.blanco,
-    color: Colors.fondo,
-    borderRadius: 4,
-    padding: 10,
-    marginBottom: 20,
-    fontSize: 16,
+    backgroundColor: Colors.fondo,
+    borderWidth: 2,
+    borderColor: Colors.purpuraClaro,
+    color: Colors.blanco,
+    fontSize: 18,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    marginBottom: 32,
+    shadowColor: Colors.purpuraClaro,
   },
-}); 
+  buttonContainer: {
+    alignItems: 'flex-end', // Alinea el botón a la izquierda
+  },
+});
