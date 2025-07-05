@@ -23,7 +23,7 @@ export default function CardDetail({ audioVisualId }: DetailScreenProps) {
     
     return (
         <View style={[styles.contenedor, { width: CARD_WIDTH }]}>
-            {contenidoInfo && <Imagenes url={contenidoInfo.imageUrl}/>}
+            {contenidoInfo && <Imagenes url={String(contenidoInfo.imageUrl)}/>}
             <TextPressStart2P style={styles.tituloCard}>
                 {contenidoInfo?.nombre}
             </TextPressStart2P>

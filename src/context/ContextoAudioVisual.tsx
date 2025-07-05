@@ -1,7 +1,7 @@
-import { contenidosAudiovisuales, IContenidoAudiovisual } from '@/data/contenidosAudiovisuales';
-import { generosContenidoAudiovisual, IGeneroContenidoAudiovisual } from '@/data/generosContenidoAudiovisual';
-import { ITipoContenidoAudiovisual, tiposContenidoAudiovisual } from '@/data/tiposContenidoAudiovisual';
-import React, { createContext, ReactNode, useContext } from 'react';
+import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import { IContenidoAudiovisual } from '@/data/contenidosAudiovisuales';
+import { IGeneroContenidoAudiovisual } from '@/data/generosContenidoAudiovisual';
+import { ITipoContenidoAudiovisual } from '@/data/tiposContenidoAudiovisual';
 
 interface AudioVisualContextoDato {
     contenidos: IContenidoAudiovisual[];
@@ -24,10 +24,21 @@ interface AudioVisualProviderProps {
 }
 // proveedor del contexto
 export function AudioVisualProvider({ children }: AudioVisualProviderProps) {
-    //para la carga de datos
-    const contenidos = contenidosAudiovisuales;
-    const generos = generosContenidoAudiovisual;
-    const tipos = tiposContenidoAudiovisual;
+    const [contenidos, setContenidos] = useState<IContenidoAudiovisual[]>([]);
+    const [generos, setGeneros] = useState<IGeneroContenidoAudiovisual[]>([]);
+    const [tipos, setTipos] = useState<ITipoContenidoAudiovisual[]>([]);
+
+    useEffect(() => {
+        fetch('/contenidos')
+            .then(res => res.json())
+            .then(setContenidos);
+        fetch('/generos')
+            .then(res => res.json())
+            .then(setGeneros);
+        fetch('/tipos')
+            .then(res => res.json())
+            .then(setTipos);
+    }, []);
 
     const getContenidoId = (id: number): IContenidoAudiovisual | undefined => {
         return contenidos.find(contenido => contenido.id === id);
@@ -88,6 +99,6 @@ export function useAudioVisual(): AudioVisualContextoDato {
 
     if (context === undefined) {
         throw new Error('useAudioVisual debe ser usado dentro de AudioVisualProvider');
-    }    
+    }
     return context;
 }

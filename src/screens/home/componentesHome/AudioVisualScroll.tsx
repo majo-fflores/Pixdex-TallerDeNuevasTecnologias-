@@ -29,7 +29,18 @@ export function AudioVisualScroll({ tipoId, filteredContent }: AudioVisualScroll
 
     // No renderizar si no hay contenido
     if (contenido.length === 0) {
-        return null;
+        return (
+            <View style={styles.contenedor}>
+                <View style={styles.contenedorTitulo}>
+                    <TextPressStart2P style={styles.titulo}>{tipo?.plural.toUpperCase()}</TextPressStart2P>
+                </View>
+                <View style={{ padding: 20 }}>
+                    <TextPressStart2P style={{ color: Colors.blanco, textAlign: 'center' }}>
+                        Sin resultados para los filtros elegidos
+                    </TextPressStart2P>
+                </View>
+            </View>
+        );
     }
 
     return (

@@ -1,22 +1,30 @@
 import Colors from '@/constants/Colors';
 import { useAudioVisual } from '@/src/context/ContextoAudioVisual';
 import { ROUTES } from "@/src/navigation/routes";
-import React, { useMemo, useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import React, { useMemo, useState, useEffect } from "react";
+import { ScrollView, StyleSheet, View, Text } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FilterModal, FilterOptions } from "../../../components/FilterModal";
 import { AudioVisualScroll } from "./componentesHome/AudioVisualScroll";
 import { GameButton } from "./componentesHome/GameButton";
 import { HomeHeader } from "./componentesHome/HomeHeader";
+import { TextPressStart2P } from "@/components/TextPressStart2P";
 
 export function HomeScreen() {
   const {tipos,filtrarContenidos} = useAudioVisual(); //aqui uso el contexto
 
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
   const [filters, setFilters] = useState<FilterOptions>({
-    seleccionarTipos: tipos.map(tipo => tipo.id), // Todos seleccionados por defecto
-    seleccionarGeneros: [] // Ninguno seleccionado por defecto
+    seleccionarTipos: [], // Inicialmente vacío
+    seleccionarGeneros: []
   });
+
+  // Setear los tipos automáticamente cuando estén disponibles o si el usuario destildó todo
+  useEffect(() => {
+    if (tipos.length > 0 && filters.seleccionarTipos.length === 0) {
+      setFilters(f => ({ ...f, seleccionarTipos: tipos.map(tipo => tipo.id) }));
+    }
+  }, [tipos]);
 
   // funcion para filtrar contenido usando el contexto
   const filteredContent = useMemo(() => {
@@ -27,6 +35,9 @@ export function HomeScreen() {
   const getFilteredContentType = (tipoId: number) => {
     return filteredContent.filter(item => item.tipoId === tipoId);
   };
+
+  // Verificar si hay algún resultado en toda la pantalla o si no hay ningún tipo seleccionado
+  const hayResultados = filters.seleccionarTipos.length > 0 && tipos.some(tipo => getFilteredContentType(tipo.id).length > 0);
 
   const handleOpenFilterModal = () => {
     setIsFilterModalVisible(true);
@@ -60,18 +71,25 @@ export function HomeScreen() {
         </View>
         <View style={styles.contenedorScroll}>
           {tipos
-            .filter(tipo => filters.seleccionarTipos.includes(tipo.id)) // Solo mostrar tipos seleccionados
+            .filter(tipo => filters.seleccionarTipos.includes(tipo.id))
             .map((tipo) => {
               const contentForType = getFilteredContentType(tipo.id);
-              // Solo mostrar la sección si hay contenido
-              return contentForType.length > 0 ? (
-                <AudioVisualScroll 
-                  key={tipo.id} 
-                  tipoId={tipo.id} 
+              if (contentForType.length === 0) return null;
+              return (
+                <AudioVisualScroll
+                  key={tipo.id}
+                  tipoId={tipo.id}
                   filteredContent={contentForType}
                 />
-              ) : null;
+              );
             })}
+          {!hayResultados && (
+            <View style={{ padding: 40 }}>
+              <TextPressStart2P style={{ color: Colors.blanco, textAlign: 'center', fontSize: 16 }}>
+                No hay resultados que coincidan con los filtros seleccionados.
+              </TextPressStart2P>
+            </View>
+          )}
         </View>
       </ScrollView>
 

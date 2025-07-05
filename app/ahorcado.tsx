@@ -1,3 +1,3 @@
-import AhorcadoScreen from "@/src/screens/ahorcado/AhorcadoScreen";
+import {AhorcadoScreen} from "@/src/screens/ahorcado/AhorcadoScreen";
 
 export default AhorcadoScreen;

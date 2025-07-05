@@ -4,6 +4,7 @@ import { useRouter } from "expo-router";
 import { StyleSheet, View } from "react-native";
 import { Buttons } from "../../../components/Buttons";
 import { TextPressStart2P } from "../../../components/TextPressStart2P";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function PixelRevealScreen() {
     const router = useRouter();
@@ -12,6 +13,7 @@ export default function PixelRevealScreen() {
     };
 
     return (
+        <SafeAreaView edges={['top']} style={styles.screenContainer}>
         <View style={[styles.container]}>
 
             <View style={styles.contenedorHeader}>
@@ -22,6 +24,7 @@ export default function PixelRevealScreen() {
                 <TextPressStart2P style={styles.titulo}>EL JUEGO DE PIXEL REVEAL</TextPressStart2P>
             </View>
         </View>
+        </SafeAreaView>
     )
 }
 
@@ -29,6 +32,10 @@ export default function PixelRevealScreen() {
 // Styles
 //------------------
 const styles = StyleSheet.create({
+    screenContainer: {
+        flex: 1,
+        backgroundColor: Colors.fondo,
+    },
     titulo: {
         color: Colors.verde,
         fontSize: 24,

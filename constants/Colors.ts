@@ -5,8 +5,8 @@ const Colors = {
   purpuraClaro: '#9B87F5',
   verde: '#5FD068',
   grisOscuro: '#403E43',
-  blanco: '#fff'
-
+  blanco: '#fff',
+  rojo: '#8b0000',
 };
 
 export default Colors;

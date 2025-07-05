@@ -12,7 +12,6 @@ export default function DetailRoute() {
     const { audioVisualId } = useLocalSearchParams<DetailRouteParams>();
     const { getContenidoId } = useAudioVisual();
     const [showError, setShowError] = useState(false);
-
     const contenido = audioVisualId ? getContenidoId(parseInt(audioVisualId)) : undefined;
 
     useEffect(() => {
@@ -27,8 +26,7 @@ export default function DetailRoute() {
                 visible={showError}
                 onDismiss={() => setShowError(false)}
                 duration={3000}
-                style={{ backgroundColor: 'red' }}
-            >
+                style={{ backgroundColor: 'red' }}>
                 No se encontro el contenido.
             </Snackbar>
         );

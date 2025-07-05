@@ -2,9 +2,11 @@ import { Buttons } from '@/components/Buttons';
 import Colors from '@/constants/Colors';
 import { useAudioVisual } from '@/src/context/ContextoAudioVisual';
 import { MaterialIcons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Platform, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { TextPressStart2P } from './TextPressStart2P';
+
+const isMobile = Platform.OS === "android" || Platform.OS === "ios";
 
 export interface FilterOptions {
   seleccionarTipos: number[];
@@ -25,6 +27,11 @@ export function FilterModal({ visible, onClose, onApplyFilters, initialFilters }
 
   const [seleccionarTipos, setSeleccionarTipos] = useState<number[]>(initialFilters.seleccionarTipos);
   const [seleccionarGeneros, setSeleccionarGeneros] = useState<number[]>(initialFilters.seleccionarGeneros);
+
+  useEffect(() => {
+    setSeleccionarTipos(initialFilters.seleccionarTipos);
+    setSeleccionarGeneros(initialFilters.seleccionarGeneros);
+  }, [initialFilters, visible]);
 
   const toggleType = (typeId: number) => {
     setSeleccionarTipos(prev => 
@@ -54,6 +61,11 @@ export function FilterModal({ visible, onClose, onApplyFilters, initialFilters }
     setSeleccionarTipos(initialFilters.seleccionarTipos);
     setSeleccionarGeneros(initialFilters.seleccionarGeneros);
     onClose();
+  };
+
+  const handleResetFilters = () => {
+    setSeleccionarTipos(tipos.map(tipo => tipo.id));
+    setSeleccionarGeneros([]);
   };
 
   return (
@@ -129,24 +141,37 @@ export function FilterModal({ visible, onClose, onApplyFilters, initialFilters }
           <View style={styles.footer}>
             <View style={styles.buttonContainer}>
               <Buttons
-                titulo="CANCELAR"
-                onPress={handleCancel}
+                titulo="RESET"
+                onPress={handleResetFilters}
                 backgroundColor={Colors.grisOscuro}
                 borderTopColor={Colors.grisOscuro}
                 borderLeftColor={Colors.grisOscuro}
                 borderBottomColor={Colors.grisOscuro}
                 borderRightColor={Colors.grisOscuro}
                 showIcon={false}
-                textSize={Platform.OS === "android" ? 10 : 12}
+                textSize={isMobile ? 10 : 12}
               />
             </View>
             <View style={styles.buttonContainer}>
               <Buttons
-                titulo="APLICAR FILTROS"
+                titulo="CANCELAR"
+                onPress={handleCancel}
+                backgroundColor={Colors.rojo}
+                borderTopColor={Colors.rojo}
+                borderLeftColor={Colors.rojo}
+                borderBottomColor={Colors.rojo}
+                borderRightColor={Colors.rojo}
+                showIcon={false}
+                textSize={isMobile ? 10 : 12}
+              />
+            </View>
+            <View style={styles.buttonContainer}>
+              <Buttons
+                titulo="APLICAR"
                 onPress={handleApplyFilters}
                 backgroundColor={Colors.purpura}
                 showIcon={false}
-                textSize={Platform.OS === "android" ? 10 : 12}
+                textSize={isMobile ? 10 : 12}
               />
             </View>
           </View>
@@ -162,7 +187,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.8)',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    paddingTop: isMobile ? 40 : 20,
+    paddingBottom: isMobile ? 40 : 20,
+    paddingHorizontal: isMobile ? 12 : 20,
   },
   modalContainer: {
     backgroundColor: Colors.fondo,
@@ -170,35 +197,38 @@ const styles = StyleSheet.create({
     borderColor: Colors.purpuraClaro,
     width: '100%',
     maxWidth: 500,
-    maxHeight: '80%',
+    maxHeight: isMobile ? '95%' : '80%',
+    minHeight: isMobile ? '60%' : undefined,
     borderRadius: 0,
+    paddingHorizontal: isMobile ? 5 : 0,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 15,
+    padding: isMobile ? 8 : 15,
     borderBottomWidth: 1,
     borderBottomColor: Colors.grisOscuro,
   },
   title: {
     color: Colors.blanco,
-    fontSize: Platform.OS === "android" ? 14 : 16,
+    fontSize: isMobile ? 16 : 20,
   },
   closeButton: {
     padding: 5,
   },
   content: {
     flex: 1,
-    padding: 15,
+    padding: isMobile ? 8 : 20,
+    minHeight: isMobile ? 200 : undefined,
   },
   section: {
-    marginBottom: 20,
+    marginBottom: isMobile ? 10 : 20,
   },
   sectionTitle: {
     color: Colors.purpuraClaro,
-    fontSize: Platform.OS === "android" ? 12 : 14,
-    marginBottom: 15,
+    fontSize: isMobile ? 14 : 18,
+    marginBottom: isMobile ? 8 : 15,
   },
   genresGrid: {
     flexDirection: 'column',
@@ -206,14 +236,14 @@ const styles = StyleSheet.create({
   checkboxItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: isMobile ? 8 : 12,
   },
   checkbox: {
-    width: 20,
-    height: 20,
+    width: isMobile ? 28 : 20,
+    height: isMobile ? 28 : 20,
     borderWidth: 2,
     borderColor: Colors.purpuraClaro,
-    marginRight: 10,
+    marginRight: isMobile ? 14 : 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -223,18 +253,18 @@ const styles = StyleSheet.create({
   },
   checkboxLabel: {
     color: Colors.blanco,
-    fontSize: Platform.OS === "android" ? 10 : 12,
+    fontSize: isMobile ? 14 : 12,
     textTransform: 'capitalize',
   },
   footer: {
     flexDirection: 'row',
-    padding: 15,
-    gap: 10,
+    padding: isMobile ? 8 : 15,
+    gap: isMobile ? 5 : 10,
     borderTopWidth: 1,
     borderTopColor: Colors.grisOscuro,
   },
   buttonContainer: {
-    flex: 1,
+    flex: 0.5,
   },
 });
 
