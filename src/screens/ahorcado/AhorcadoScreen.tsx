@@ -143,22 +143,26 @@ export function AhorcadoScreen() {
         <AhorcadoHeader vidas={vidas} puntaje={puntaje} />
         <View style={styles.cuadroGris}>
           <View style={styles.botonesRow}>
-            <Buttons
-              titulo="GUESS TITLE"
-              onPress={() => setMostrarModalTitulo(true)}
-              backgroundColor={Colors.purpura}
-              showIcon={false}
-              textSize={12}
-              padding={10}
-            />
-            <Buttons
-              titulo="GUESS LETTER"
-              onPress={() => setMostrarModalLetra(true)}
-              backgroundColor={Colors.purpura}
-              showIcon={false}
-              textSize={12}
-              padding={10}
-            />
+            <View style={styles.botonContainer}>
+              <Buttons
+                titulo="GUESS TITLE"
+                onPress={() => setMostrarModalTitulo(true)}
+                backgroundColor={Colors.purpura}
+                showIcon={false}
+                textSize={12}
+                padding={10}
+              />
+            </View>
+            <View style={styles.botonContainer}>
+              <Buttons
+                titulo="GUESS LETTER"
+                onPress={() => setMostrarModalLetra(true)}
+                backgroundColor={Colors.purpura}
+                showIcon={false}
+                textSize={12}
+                padding={10}
+              />
+            </View>
           </View>
           <AhorcadoImagen url={String(contenidoActual.imageUrl)} />
           <View style={styles.rayitasBox}>
@@ -255,9 +259,14 @@ const styles = StyleSheet.create({
   },
   botonesRow: {
     flexDirection: "row",
-    justifyContent: "center",
-    gap: Platform.OS === "web" ? 30 : 10,
-    marginBottom: Platform.OS === "web" ? 30 : 10,
+    justifyContent: "space-between",
+    width: "100%",
+    marginBottom: Platform.OS === "web" ? 30 : 5,
+    paddingHorizontal: 1,
+  },
+  botonContainer: {
+    flex: 1,
+    marginHorizontal: 4,
   },
   rayitasBox: {
     width: "100%",

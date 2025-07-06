@@ -29,9 +29,9 @@ export function FilterModal({ visible, onClose, onApplyFilters, initialFilters }
   const [seleccionarGeneros, setSeleccionarGeneros] = useState<number[]>([]);
 
   useEffect(() => {
-    setSeleccionarTipos(initialFilters.seleccionarTipos);
-    setSeleccionarGeneros(initialFilters.seleccionarGeneros);
-  }, [initialFilters, visible]);
+    setSeleccionarTipos([]);
+    setSeleccionarGeneros([]);
+  }, [visible]);
 
   const toggleType = (typeId: number) => {
     setSeleccionarTipos(prev => 
