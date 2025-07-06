@@ -4,6 +4,7 @@ import { TextPressStart2P } from "@/components/TextPressStart2P";
 import { Buttons } from "@/components/Buttons";
 import Colors from "@/constants/Colors";
 import { useRouter } from "expo-router";
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 export function AhorcadoHeader({ vidas }: { vidas: number }) {
   const router = useRouter();
@@ -31,7 +32,7 @@ export function AhorcadoHeader({ vidas }: { vidas: number }) {
               i < vidas ? styles.corazonLleno : styles.corazonVacio,
             ]}
           >
-            {i < vidas ? "♥" : "♡"}
+            {i < vidas ? <AntDesign name="heart" size={24} color="Colors.purpura" /> : <AntDesign name="hearto" size={24} color="Colors.purpura" />}
           </TextPressStart2P>
         ))}
       </View>

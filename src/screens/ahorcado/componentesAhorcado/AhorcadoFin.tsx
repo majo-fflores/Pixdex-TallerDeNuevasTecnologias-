@@ -9,7 +9,7 @@ export function AhorcadoFin({ gano, titulo, onVolver }: { gano: boolean, titulo:
     <View style={styles.container}>
       <TextPressStart2P style={styles.titulo}>¡Juego terminado!</TextPressStart2P>
       <TextPressStart2P style={styles.resultado}>
-        {gano ? "¡Felicidades, adivinaste el título!" : "GAME OVER!!."}
+        {gano ? "¡Felicidades, adivinaste el título!" : "GAME OVER!!"}
       </TextPressStart2P>
       <TextPressStart2P style={styles.tituloCorrecto}>El título era: {titulo}</TextPressStart2P>
       <Buttons

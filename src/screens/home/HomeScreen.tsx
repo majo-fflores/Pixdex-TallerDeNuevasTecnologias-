@@ -60,7 +60,7 @@ export function HomeScreen() {
             title="Desafío del Ahorcado"
             description="Adivina los títulos letra por letra. ¿Cuántos puedes identificar?"
             background={Colors.purpura}
-            url={ROUTES.AHORCADO}
+            url={ROUTES.AHORCADO_HOME}
           />
           <GameButton
             title="Pixel Reveal"
@@ -76,9 +76,9 @@ export function HomeScreen() {
               const contentForType = getFilteredContentType(tipo.id);
               if (contentForType.length === 0) return null;
               return (
-                <AudioVisualScroll
-                  key={tipo.id}
-                  tipoId={tipo.id}
+                <AudioVisualScroll 
+                  key={tipo.id} 
+                  tipoId={tipo.id} 
                   filteredContent={contentForType}
                 />
               );
