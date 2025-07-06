@@ -7,14 +7,13 @@ export function AhorcadoProgreso({ progreso }: { progreso: string[] }) {
   const palabras = progreso.join("").split(" ");
   const screenWidth = Dimensions.get('window').width;
   
-  // Calculamos el ancho disponible considerando el padding del contenedor padre
-  const availableWidth = screenWidth - 120; // Margen de seguridad para padding y bordes
+  //para calcular el padding del contenedor
+  const availableWidth = screenWidth - 120; 
   
-  // Función para calcular el tamaño de fuente dinámico
   const calculateFontSize = (palabra: string) => {
     const baseSize = 20;
     const minSize = 10;
-    const maxLetters = Math.floor(availableWidth / 30); // Aproximadamente 35px por letra
+    const maxLetters = Math.floor(availableWidth / 30);
     
     if (palabra.length <= maxLetters) {
       return baseSize;
@@ -40,7 +39,7 @@ export function AhorcadoProgreso({ progreso }: { progreso: string[] }) {
                   { 
                     fontSize: fontSize,
                     marginHorizontal: letterSpacing,
-                    minWidth: fontSize + 6, // Ajustamos el ancho mínimo según el tamaño de fuente
+                    minWidth: fontSize + 6,
                   }
                 ]}
               >
@@ -67,13 +66,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 5,
     marginVertical: 1,
-    flexWrap: "wrap", // Permite que las letras se envuelvan si es necesario
+    flexWrap: "wrap", 
     justifyContent: "center",
     alignItems: "center",
   },
   letra: {
     color: Colors.blanco,
     textAlign: "center",
-    flexShrink: 1, // Permite que las letras se contraigan si es necesario
+    flexShrink: 1, 
   },
 });

@@ -4,13 +4,14 @@ import { TextPressStart2P } from "@/components/TextPressStart2P";
 import { Buttons } from "@/components/Buttons";
 import Colors from "@/constants/Colors";
 
-export function AhorcadoFin({ gano, titulo, onVolver }: { gano: boolean, titulo: string, onVolver: () => void }) {
+export function AhorcadoFin({ gano, titulo, onVolver, puntaje }: { gano: boolean, titulo: string, onVolver: () => void, puntaje: number }) {
   return (
     <View style={styles.container}>
       <TextPressStart2P style={styles.titulo}>¡Juego terminado!</TextPressStart2P>
       <TextPressStart2P style={styles.resultado}>
-        {gano ? "¡Felicidades, adivinaste el título!" : "GAME OVER!!"}
+        {gano ? "¡Felicidades, adivino todo el catalogo!!!" : "GAME OVER!!"}
       </TextPressStart2P>
+      <TextPressStart2P style={styles.puntajeFinal}>Puntaje Final: {puntaje}</TextPressStart2P>
       <TextPressStart2P style={styles.tituloCorrecto}>El título era: {titulo}</TextPressStart2P>
       <Buttons
         titulo="VOLVER AL HOME"
@@ -46,6 +47,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 40
   },
+  puntajeFinal: {
+    color: Colors.verde,
+    fontSize: 20,
+    marginBottom: 10,
+    textAlign: 'center',
+  },
   tituloCorrecto: {
     color: Colors.blanco,
     fontSize: 16,
@@ -54,4 +61,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 40
   },
-}); 
+});

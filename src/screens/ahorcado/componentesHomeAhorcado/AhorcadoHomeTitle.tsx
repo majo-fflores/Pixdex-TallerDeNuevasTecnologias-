@@ -1,6 +1,6 @@
 import React from "react";
 import { TextPressStart2P } from "@/components/TextPressStart2P";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Platform } from "react-native";
 import Colors from "@/constants/Colors";
 
 export function AhorcadoHomeTitle() {
@@ -15,11 +15,11 @@ export function AhorcadoHomeTitle() {
 const styles = StyleSheet.create({
   titleBox: {
     alignItems: "center",
-    marginBottom: 12,
+    marginBottom: Platform.OS === "web" ? 24 : 12,
   },
   title: {
     color: Colors.purpuraClaro,
-    fontSize: 28,
+    fontSize: Platform.OS === "web" ? 38 : 28,
     textAlign: "center",
     marginVertical: 0,
   },

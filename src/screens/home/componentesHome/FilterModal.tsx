@@ -25,8 +25,8 @@ export function FilterModal({ visible, onClose, onApplyFilters, initialFilters }
   //uso el contexto 
   const {tipos, generos} = useAudioVisual();
 
-  const [seleccionarTipos, setSeleccionarTipos] = useState<number[]>(initialFilters.seleccionarTipos);
-  const [seleccionarGeneros, setSeleccionarGeneros] = useState<number[]>(initialFilters.seleccionarGeneros);
+  const [seleccionarTipos, setSeleccionarTipos] = useState<number[]>([]);
+  const [seleccionarGeneros, setSeleccionarGeneros] = useState<number[]>([]);
 
   useEffect(() => {
     setSeleccionarTipos(initialFilters.seleccionarTipos);
@@ -156,11 +156,11 @@ export function FilterModal({ visible, onClose, onApplyFilters, initialFilters }
               <Buttons
                 titulo="CANCELAR"
                 onPress={handleCancel}
-                backgroundColor={Colors.rojo}
-                borderTopColor={Colors.rojo}
-                borderLeftColor={Colors.rojo}
-                borderBottomColor={Colors.rojo}
-                borderRightColor={Colors.rojo}
+                backgroundColor={Colors.rojoOscuro}
+                borderTopColor={Colors.rojoOscuro}
+                borderLeftColor={Colors.rojoOscuro}
+                borderBottomColor={Colors.rojoOscuro}
+                borderRightColor={Colors.rojoOscuro}
                 showIcon={false}
                 textSize={isMobile ? 10 : 12}
               />

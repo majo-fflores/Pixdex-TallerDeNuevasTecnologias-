@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from "react";
-import { View, StyleSheet, ScrollView, Platform, Dimensions } from "react-native";
+import React, { useMemo, useState, useEffect } from "react";
+import { View, StyleSheet, ScrollView, Platform } from "react-native";
 import { useAudioVisual } from "@/src/context/ContextoAudioVisual";
 import { AhorcadoHeader } from "./componentesAhorcado/AhorcadoHeader";
 import { AhorcadoImagen } from "./componentesAhorcado/AhorcadoImagen";
@@ -11,12 +11,25 @@ import { useRouter } from "expo-router";
 import { Buttons } from "@/components/Buttons";
 import Colors from "@/constants/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { TextPressStart2P } from "@/components/TextPressStart2P";
 
 export function AhorcadoScreen() {
   const { contenidos } = useAudioVisual();
-    const router = useRouter();
+  const router = useRouter();
 
-  // Barajar contenidos solo una vez
+  const [indice, setIndice] = useState(0);
+  const [vidas, setVidas] = useState(5);
+  const [letrasAdivinadas, setLetrasAdivinadas] = useState<string[]>([]);
+  const [letrasUsadas, setLetrasUsadas] = useState<string[]>([]);
+  const [mostrarModalTitulo, setMostrarModalTitulo] = useState(false);
+  const [mostrarModalLetra, setMostrarModalLetra] = useState(false);
+  const [juegoTerminado, setJuegoTerminado] = useState(false);
+  const [inputTitulo, setInputTitulo] = useState("");
+  const [gano, setGano] = useState(false);
+  const [puntaje, setPuntaje] = useState(0);
+  const [snackbar, setSnackbar] = useState(false);
+  const [snackbarError, setSnackbarError] = useState(false);
+
   const contenidosAleatorios = useMemo(() => {
     const arr = [...contenidos];
     for (let i = arr.length - 1; i > 0; i--) {
@@ -26,23 +39,7 @@ export function AhorcadoScreen() {
     return arr;
   }, [contenidos]);
 
-  const contenidoActual = contenidosAleatorios[0];
-
-  // Estados principales
-  const [vidas, setVidas] = useState(5);
-  const [letrasAdivinadas, setLetrasAdivinadas] = useState<string[]>([]);
-  const [letrasUsadas, setLetrasUsadas] = useState<string[]>([]);
-  const [mostrarModalTitulo, setMostrarModalTitulo] = useState(false);
-  const [mostrarModalLetra, setMostrarModalLetra] = useState(false);
-  const [juegoTerminado, setJuegoTerminado] = useState(false);
-  const [inputTitulo, setInputTitulo] = useState("");
-  const [gano, setGano] = useState(false);
-
-  // Funcion para limpiar el input y abrir el modal
-  const handleAbrirModalTitulo = () => {
-    setInputTitulo("");
-    setMostrarModalTitulo(true);
-  };
+  const contenidoActual = contenidosAleatorios[indice];
 
   // Progreso: array de letras y guiones bajos
   const progreso = useMemo(() => {
@@ -54,24 +51,28 @@ export function AhorcadoScreen() {
     );
   }, [contenidoActual, letrasAdivinadas]);
 
-  //si adivina todo
-  const adivinoTodo = useMemo(() => {
-    if (!contenidoActual) return false;
-    return contenidoActual.nombre
-      .toUpperCase()
-      .split("")
-      .every(l => l === " " || letrasAdivinadas.includes(l));
-  }, [contenidoActual, letrasAdivinadas]);
-
-  // Logica de adivinar título
+  // Logica de adivinar titulo
   const handleGuessTitle = () => {
     if (!contenidoActual) return;
     if (inputTitulo.trim().toLowerCase() === contenidoActual.nombre.trim().toLowerCase()) {
-      setGano(true);
-      setJuegoTerminado(true);
+      setPuntaje(p => p + 1);
+      setSnackbar(true);
+      setTimeout(() => setSnackbar(false), 2000);
+      // Pasar al siguiente contenido si hay más
+      if (indice < contenidosAleatorios.length - 1) {
+        setIndice(i => i + 1);
+        setLetrasAdivinadas([]);
+        setLetrasUsadas([]);
+        setInputTitulo("");
+      } else {
+        setGano(true);
+        setJuegoTerminado(true);
+      }
     } else {
       const nuevasVidas = vidas - 1;
       setVidas(nuevasVidas);
+      setSnackbarError(true);
+      setTimeout(() => setSnackbarError(false), 2000);
       if (nuevasVidas <= 0) setJuegoTerminado(true);
     }
     setMostrarModalTitulo(false);
@@ -86,29 +87,42 @@ export function AhorcadoScreen() {
     setLetrasUsadas(prev => [...prev, upper]);
     if (contenidoActual.nombre.toUpperCase().includes(upper)) {
       setLetrasAdivinadas(prev => [...prev, upper]);
-      // Si ya adivino todo, termina el juego
+      // Si ya adivino todo, termina el juego o pasa al siguiente
       const todasAdivinadas = contenidoActual.nombre
         .toUpperCase()
         .split("")
         .every(l => l === " " || [...letrasAdivinadas, upper].includes(l));
       if (todasAdivinadas) {
-        setGano(true);
-        setJuegoTerminado(true);
+        setPuntaje(p => p + 1);
+        setSnackbar(true);
+        setTimeout(() => setSnackbar(false), 2000);
+        if (indice < contenidosAleatorios.length - 1) {
+          setIndice(i => i + 1);
+          setLetrasAdivinadas([]);
+          setLetrasUsadas([]);
+        } else {
+          setGano(true);
+          setJuegoTerminado(true);
+        }
       }
     } else {
       const nuevasVidas = vidas - 1;
       setVidas(nuevasVidas);
+      setSnackbarError(true);
+      setTimeout(() => setSnackbarError(false), 2000);
       if (nuevasVidas <= 0) setJuegoTerminado(true);
     }
     setMostrarModalLetra(false);
   };
 
-  const handleExit = () => {
-    router.back(); // O la ruta de tu home
-  };
+  useEffect(() => {
+    if (vidas <= 0 || indice >= contenidosAleatorios.length) {
+      setJuegoTerminado(true);
+    }
+  }, [vidas, indice, contenidosAleatorios.length]);
 
   const handleVolverHome = () => {
-    router.replace("/"); // O la ruta de tu home
+    router.replace("/");
   };
 
   if (!contenidoActual) return null;
@@ -118,61 +132,106 @@ export function AhorcadoScreen() {
         gano={gano}
         titulo={contenidoActual.nombre}
         onVolver={handleVolverHome}
+        puntaje={puntaje}
       />
     );
   }
 
   return (
     <SafeAreaView edges={['top']} style={styles.screenContainer}>
-    <ScrollView style={styles.scroll} contentContainerStyle={styles.container} bounces={false}>
-      <AhorcadoHeader vidas={vidas} />
-      <View style={styles.cuadroGris}>
-        <View style={styles.botonesRow}>
-          <Buttons
-            titulo="GUESS TITLE"
-            onPress={handleAbrirModalTitulo}
-            backgroundColor={Colors.purpura}
-            showIcon={false}
-            textSize={12}
-            padding={10}
-          />
-          <Buttons
-            titulo="GUESS LETTER"
-            onPress={() => setMostrarModalLetra(true)}
-            backgroundColor={Colors.purpura}
-            showIcon={false}
-            textSize={12}
-            padding={10}
-          />
-            </View>
-        <AhorcadoImagen url={String(contenidoActual.imageUrl)} />
-        <View style={styles.rayitasBox}>
-          <AhorcadoProgreso progreso={progreso} />
+      <ScrollView style={styles.scroll} contentContainerStyle={styles.container} bounces={false}>
+        <AhorcadoHeader vidas={vidas} puntaje={puntaje} />
+        <View style={styles.cuadroGris}>
+          <View style={styles.botonesRow}>
+            <Buttons
+              titulo="GUESS TITLE"
+              onPress={() => setMostrarModalTitulo(true)}
+              backgroundColor={Colors.purpura}
+              showIcon={false}
+              textSize={12}
+              padding={10}
+            />
+            <Buttons
+              titulo="GUESS LETTER"
+              onPress={() => setMostrarModalLetra(true)}
+              backgroundColor={Colors.purpura}
+              showIcon={false}
+              textSize={12}
+              padding={10}
+            />
+          </View>
+          <AhorcadoImagen url={String(contenidoActual.imageUrl)} />
+          <View style={styles.rayitasBox}>
+            <AhorcadoProgreso progreso={progreso} />
+          </View>
         </View>
-      </View>
-      <ModalGuessTitle
-        visible={mostrarModalTitulo}
-        value={inputTitulo}
-        onChange={setInputTitulo}
-        onSubmit={handleGuessTitle}
-        onClose={() => setMostrarModalTitulo(false)}
-      />
-      <ModalGuessLetter
-        visible={mostrarModalLetra}
-        letrasUsadas={letrasUsadas}
-        onSelect={handleGuessLetter}
-        onClose={() => setMostrarModalLetra(false)}
-      />
-    </ScrollView>
+        <ModalGuessTitle
+          visible={mostrarModalTitulo}
+          value={inputTitulo}
+          onChange={setInputTitulo}
+          onSubmit={handleGuessTitle}
+          onClose={() => setMostrarModalTitulo(false)}
+        />
+        <ModalGuessLetter
+          visible={mostrarModalLetra}
+          letrasUsadas={letrasUsadas}
+          onSelect={handleGuessLetter}
+          onClose={() => setMostrarModalLetra(false)}
+        />
+      </ScrollView>
+      {/* Snackbar de éxito */}
+      {snackbar && (
+        <View style={styles.snackbar}>
+          <TextPressStart2P style={styles.snackbarText}>¡Correcto! +1 punto</TextPressStart2P>
+        </View>
+      )}
+      {/* Snackbar de error */}
+      {snackbarError && (
+        <View style={styles.snackbar}>
+          <TextPressStart2P style={styles.snackbarErrorText}>¡Incorrecto! -1 vidas</TextPressStart2P>
+        </View>
+      )}
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-    screenContainer: {
-        flex: 1,
-        backgroundColor: Colors.fondo,
-    },
+  screenContainer: {
+    flex: 1,
+    backgroundColor: Colors.fondo,
+  },
+  snackbar: {
+    position: "absolute",
+    bottom: 30,
+    left: 0,
+    right: 0,
+    alignItems: "center",
+    zIndex: 100,
+  },
+  snackbarText: {
+    backgroundColor: Colors.grisOscuro,
+    color: Colors.verde,
+    fontSize: 18,
+    borderWidth: 2,
+    borderColor: Colors.verde,
+    borderRadius: 8,
+    paddingHorizontal: 24,
+    paddingVertical: 10,
+    textAlign: "center",
+    textShadowRadius: 2,
+  },
+  snackbarErrorText: {
+    backgroundColor: Colors.grisOscuro,
+    color: Colors.rojo,
+    fontSize: 18,
+    borderWidth: 2,
+    borderColor: Colors.rojo,
+    borderRadius: 8,
+    paddingHorizontal: 24,
+    paddingVertical: 10,
+    textAlign: "center",
+    textShadowRadius: 2,
+  },
   scroll: {
     flex: 1,
     backgroundColor: Colors.fondo,
@@ -208,5 +267,5 @@ const styles = StyleSheet.create({
     padding: Platform.OS === "web" ? 20 : 10,
     marginTop: Platform.OS === "web" ? 30 : 10,
     alignItems: "center",
-    },
+  },
 });

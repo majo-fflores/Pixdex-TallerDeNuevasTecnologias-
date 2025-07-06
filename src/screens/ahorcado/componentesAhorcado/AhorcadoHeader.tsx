@@ -1,12 +1,11 @@
 import React from "react";
-import { View, StyleSheet, Platform } from "react-native";
-import { TextPressStart2P } from "@/components/TextPressStart2P";
+import { View, StyleSheet, Platform, Text } from "react-native";
 import { Buttons } from "@/components/Buttons";
 import Colors from "@/constants/Colors";
 import { useRouter } from "expo-router";
 import AntDesign from '@expo/vector-icons/AntDesign';
 
-export function AhorcadoHeader({ vidas }: { vidas: number }) {
+export function AhorcadoHeader({ vidas, puntaje }: { vidas: number; puntaje: number }) {
   const router = useRouter();
   const maxVidas = 5;
   const handleBack = () => {
@@ -14,29 +13,35 @@ export function AhorcadoHeader({ vidas }: { vidas: number }) {
   };
   return (
     <View style={styles.header}>
-      <Buttons
-        titulo="EXIT"
-        onPress={handleBack}
-        backgroundColor={Colors.purpuraOscuro}
-        showIcon={true}
-        iconName="arrow-back"
-        textSize={Platform.OS === "android" ? 14 : 14}
-        padding={8}
-      />
+      {/* Botón EXIT */}
+      <View style={styles.exitButtonContainer}>
+        <Buttons
+          titulo="EXIT"
+          onPress={handleBack}
+          backgroundColor={Colors.purpura}
+          showIcon={true}
+          iconName="arrow-back"
+          textSize={Platform.OS === "android" ? 14: 12}
+          padding={8}
+        />
+      </View>
+      
+      {/* Contenedor central para las vidas */}
       <View style={styles.vidasContainer}>
         {[...Array(maxVidas)].map((_, i) => (
-          <TextPressStart2P
-            key={i}
-            style={[
-              styles.corazon,
-              i < vidas ? styles.corazonLleno : styles.corazonVacio,
-            ]}
-          >
-            {i < vidas ? <AntDesign name="heart" size={24} color="Colors.purpura" /> : <AntDesign name="hearto" size={24} color="Colors.purpura" />}
-          </TextPressStart2P>
+          <View key={i} style={styles.corazon}>
+            {i < vidas
+              ? <AntDesign name="heart" size={20} color={Colors.purpuraClaro} />
+              : <AntDesign name="hearto" size={20} color={Colors.grisOscuro} />
+            }
+          </View>
         ))}
       </View>
-      <View style={{ width: 60 }} />
+      
+      {/* Score */}
+      <View style={styles.scoreContainer}>
+        <Text style={styles.puntajeText}>Score: {puntaje}</Text>
+      </View>
     </View>
   );
 }
@@ -46,26 +51,35 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
     backgroundColor: Colors.fondo,
     width: "100%",
     minHeight: 50,
+  },
+  exitButtonContainer: {
+    width: 100, 
+    justifyContent: "flex-start",
   },
   vidasContainer: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    gap: 2,
+    gap: 3,
+    flex: 1,
+  },
+  scoreContainer: {
+    width: 80, 
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
+  },
+  puntajeText: {
+    color: Colors.blanco,
+    fontSize: 14, 
+    textAlign: "right",
   },
   corazon: {
-    fontSize: 25,
-    marginHorizontal: 2,
-    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center",
   },
-  corazonLleno: {
-    color: Colors.purpuraClaro,
-  },
-  corazonVacio: {
-    color: Colors.grisOscuro,
-  },
-}); 
+});

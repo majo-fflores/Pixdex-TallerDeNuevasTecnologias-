@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, StyleSheet, View } from "react-native";
+import { Text, StyleSheet, View, Platform } from "react-native";
 import Colors from "@/constants/Colors";
 
 export function AhorcadoHomeDescription() {
@@ -14,13 +14,13 @@ export function AhorcadoHomeDescription() {
 
 const styles = StyleSheet.create({
   descBox: {
-    marginBottom: 24,
+    marginBottom: Platform.OS === "web" ? 40 : 24,
     alignItems: "center",
   },
   desc: {
     color: Colors.blanco,
-    fontSize: 20,
+    fontSize: Platform.OS === "web" ? 24 : 20,
     textAlign: "center",
-    lineHeight: 25,
+    lineHeight: Platform.OS === "web" ? 32 : 25,
   },
 });
