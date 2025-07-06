@@ -125,7 +125,7 @@ export function AhorcadoScreen() {
   return (
     <SafeAreaView edges={['top']} style={styles.screenContainer}>
     <ScrollView style={styles.scroll} contentContainerStyle={styles.container} bounces={false}>
-      <AhorcadoHeader vidas={vidas} onExit={handleExit} />
+      <AhorcadoHeader vidas={vidas} />
       <View style={styles.cuadroGris}>
         <View style={styles.botonesRow}>
           <Buttons

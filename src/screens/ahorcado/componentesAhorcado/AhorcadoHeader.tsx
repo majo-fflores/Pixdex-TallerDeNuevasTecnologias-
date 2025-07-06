@@ -3,20 +3,19 @@ import { View, StyleSheet, Platform } from "react-native";
 import { TextPressStart2P } from "@/components/TextPressStart2P";
 import { Buttons } from "@/components/Buttons";
 import Colors from "@/constants/Colors";
+import { useRouter } from "expo-router";
 
-export function AhorcadoHeader({
-  vidas,
-  onExit,
-}: {
-  vidas: number;
-  onExit: () => void;
-}) {
+export function AhorcadoHeader({ vidas }: { vidas: number }) {
+  const router = useRouter();
   const maxVidas = 5;
+  const handleBack = () => {
+    router.back();
+  };
   return (
     <View style={styles.header}>
       <Buttons
         titulo="EXIT"
-        onPress={onExit}
+        onPress={handleBack}
         backgroundColor={Colors.purpuraOscuro}
         showIcon={true}
         iconName="arrow-back"
