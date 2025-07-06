@@ -86,7 +86,6 @@ const styles = StyleSheet.create({
   title: {
     color: Colors.blanco,
     fontSize: 18,
-    textShadowColor: Colors.purpuraClaro,
     textShadowRadius: 4,
   },
   closeButton: {
@@ -101,9 +100,8 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
     marginBottom: 32,
-    shadowColor: Colors.purpuraClaro,
   },
   buttonContainer: {
-    alignItems: 'flex-end', // Alinea el botón a la izquierda
+    alignItems: 'flex-end', 
   },
 });
