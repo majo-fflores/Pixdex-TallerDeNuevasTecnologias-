@@ -39,8 +39,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: Colors.blanco,
     marginHorizontal: 5,
-    borderBottomWidth: 2,
-    borderBottomColor: Colors.purpuraClaro,
     minWidth: 30,
     textAlign: "center",
   },

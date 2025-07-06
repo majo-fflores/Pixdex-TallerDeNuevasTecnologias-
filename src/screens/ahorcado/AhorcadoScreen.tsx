@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: Colors.grisOscuro,
     borderWidth: 2,
-    borderColor: Colors.purpuraClaro,
+    borderColor: Colors.grisOscuro,
     padding: Platform.OS === "web" ? 20 : 10,
     marginTop: Platform.OS === "web" ? 30 : 20,
     alignItems: "center",

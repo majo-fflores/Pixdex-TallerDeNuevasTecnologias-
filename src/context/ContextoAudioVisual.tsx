@@ -66,9 +66,9 @@ export function AudioVisualProvider({ children }: AudioVisualProviderProps) {
         return contenidos.filter(contenido => {
             // Filtrar por tipo
             const tipoMatch = tipoIds.length === 0 || tipoIds.includes(contenido.tipoId);
-            // Filtrar por género 
+            // Filtrar por genero
             const generoMatch = generoIds.length === 0 ||
-                contenido.generos.some(generoId => generoIds.includes(generoId));
+                generoIds.every(generoId => contenido.generos.includes(generoId));
 
             return tipoMatch && generoMatch;
         });

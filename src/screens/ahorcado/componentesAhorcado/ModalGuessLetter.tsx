@@ -3,6 +3,7 @@ import { Modal, View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { TextPressStart2P } from "@/components/TextPressStart2P";
 import Colors from "@/constants/Colors";
 import { MaterialIcons } from "@expo/vector-icons";
+import { Buttons } from "@/components/Buttons";
 
 const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
@@ -31,22 +32,21 @@ export function ModalGuessLetter({
             {ALPHABET.map((letra) => {
               const usada = letrasUsadas.includes(letra);
               return (
-                <TouchableOpacity
+                <Buttons
                   key={letra}
-                  style={[
-                    styles.letterButton,
-                    usada && styles.letterButtonDisabled,
-                  ]}
+                  titulo={letra}
                   onPress={() => !usada && onSelect(letra)}
-                  disabled={usada}
-                >
-                  <TextPressStart2P style={[
-                    styles.letterText,
-                    usada && styles.letterTextDisabled,
-                  ]}>
-                    {letra}
-                  </TextPressStart2P>
-                </TouchableOpacity>
+                  backgroundColor={usada ? Colors.grisOscuro : Colors.purpura}
+                  textColor={usada ? Colors.grisClaro : Colors.blanco}
+                  textSize={16}
+                  showIcon={false}
+                  padding={10}
+                  borderWidth={2}
+                  borderTopColor={usada ? Colors.grisOscuro : Colors.purpuraClaro}
+                  borderLeftColor={usada ? Colors.grisOscuro : Colors.purpuraClaro}
+                  borderBottomColor={usada ? Colors.grisOscuro : Colors.purpuraOscuro}
+                  borderRightColor={usada ? Colors.grisOscuro : Colors.purpuraOscuro}
+                />
               );
             })}
           </View>
