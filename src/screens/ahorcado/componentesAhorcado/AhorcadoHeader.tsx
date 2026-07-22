@@ -9,7 +9,7 @@ export function AhorcadoHeader({ vidas, puntaje }: { vidas: number; puntaje: num
   const router = useRouter();
   const maxVidas = 5;
   const handleBack = () => {
-    router.back();
+    router.replace("/");
   };
   return (
     <View style={styles.header}>
