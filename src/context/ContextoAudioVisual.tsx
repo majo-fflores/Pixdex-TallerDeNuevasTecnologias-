@@ -63,12 +63,17 @@ export function AudioVisualProvider({ children }: AudioVisualProviderProps) {
     };
 
     const filtrarContenidos = (tipoIds: number[], generoIds: number[]): IContenidoAudiovisual[] => {
+        const hayFiltroTipos = tipoIds.length > 0 && tipoIds.length < tipos.length;
+        const hayFiltroGeneros = generoIds.length > 0 && generoIds.length < generos.length;
+
+        if (!hayFiltroTipos && !hayFiltroGeneros) {
+            return contenidos;
+        }
+
         return contenidos.filter(contenido => {
-            // Filtrar por tipo
-            const tipoMatch = tipoIds.length === 0 || tipoIds.includes(contenido.tipoId);
-            // Filtrar por genero
-            const generoMatch = generoIds.length === 0 ||
-                generoIds.every(generoId => contenido.generos.includes(generoId));
+            const tipoMatch = !hayFiltroTipos || tipoIds.includes(contenido.tipoId);
+            const generoMatch = !hayFiltroGeneros ||
+                generoIds.some(generoId => contenido.generos.includes(generoId));
 
             return tipoMatch && generoMatch;
         });

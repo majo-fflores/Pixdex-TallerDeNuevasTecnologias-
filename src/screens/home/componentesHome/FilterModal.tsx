@@ -29,9 +29,11 @@ export function FilterModal({ visible, onClose, onApplyFilters, initialFilters }
   const [seleccionarGeneros, setSeleccionarGeneros] = useState<number[]>([]);
 
   useEffect(() => {
-    setSeleccionarTipos([]);
-    setSeleccionarGeneros([]);
-  }, [visible]);
+    if (visible) {
+      setSeleccionarTipos(initialFilters.seleccionarTipos);
+      setSeleccionarGeneros(initialFilters.seleccionarGeneros);
+    }
+  }, [visible, initialFilters]);
 
   const toggleType = (typeId: number) => {
     setSeleccionarTipos(prev => 
@@ -64,7 +66,7 @@ export function FilterModal({ visible, onClose, onApplyFilters, initialFilters }
   };
 
   const handleResetFilters = () => {
-    setSeleccionarTipos(tipos.map(tipo => tipo.id));
+    setSeleccionarTipos([]);
     setSeleccionarGeneros([]);
   };
 

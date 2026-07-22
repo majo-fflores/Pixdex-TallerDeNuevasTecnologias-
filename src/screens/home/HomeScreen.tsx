@@ -1,43 +1,38 @@
 import Colors from '@/constants/Colors';
 import { useAudioVisual } from '@/src/context/ContextoAudioVisual';
 import { ROUTES } from "@/src/navigation/routes";
-import React, { useMemo, useState, useEffect } from "react";
-import { ScrollView, StyleSheet, View, Text } from "react-native";
+import React, { useMemo, useState } from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FilterModal, FilterOptions } from "./componentesHome/FilterModal";
 import { AudioVisualScroll } from "./componentesHome/AudioVisualScroll";
 import { GameButton } from "./componentesHome/GameButton";
 import { HomeHeader } from "./componentesHome/HomeHeader";
-import { TextPressStart2P } from "@/components/TextPressStart2P";
 
 export function HomeScreen() {
-  const {tipos,filtrarContenidos} = useAudioVisual(); //aqui uso el contexto
+  const { tipos, filtrarContenidos } = useAudioVisual();
 
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
   const [filters, setFilters] = useState<FilterOptions>({
-    seleccionarTipos: [], // Inicialmente vacío
+    seleccionarTipos: [],
     seleccionarGeneros: []
   });
 
-  // Setear los tipos automáticamente cuando estén disponibles o si el usuario destildó todo
-  useEffect(() => {
-    if (tipos.length > 0 && filters.seleccionarTipos.length === 0) {
-      setFilters(f => ({ ...f, seleccionarTipos: tipos.map(tipo => tipo.id) }));
-    }
-  }, [tipos]);
-
-  // funcion para filtrar contenido usando el contexto
   const filteredContent = useMemo(() => {
     return filtrarContenidos(filters.seleccionarTipos, filters.seleccionarGeneros);
-  },[filters,filtrarContenidos]);
+  }, [filters, filtrarContenidos]);
 
-  // funcion para obtener contenido filtrado por tipo
   const getFilteredContentType = (tipoId: number) => {
     return filteredContent.filter(item => item.tipoId === tipoId);
   };
 
-  // Verificar si hay algún resultado en toda la pantalla o si no hay ningún tipo seleccionado
-  const hayResultados = filters.seleccionarTipos.length > 0 && tipos.some(tipo => getFilteredContentType(tipo.id).length > 0);
+  const tiposAMostrar = useMemo(() => {
+    const hayFiltroTipos = filters.seleccionarTipos.length > 0 && filters.seleccionarTipos.length < tipos.length;
+    if (!hayFiltroTipos) {
+      return tipos;
+    }
+    return tipos.filter(tipo => filters.seleccionarTipos.includes(tipo.id));
+  }, [filters.seleccionarTipos, tipos]);
 
   const handleOpenFilterModal = () => {
     setIsFilterModalVisible(true);
@@ -70,26 +65,13 @@ export function HomeScreen() {
           />
         </View>
         <View style={styles.contenedorScroll}>
-          {tipos
-            .filter(tipo => filters.seleccionarTipos.includes(tipo.id))
-            .map((tipo) => {
-              const contentForType = getFilteredContentType(tipo.id);
-              if (contentForType.length === 0) return null;
-              return (
-                <AudioVisualScroll 
-                  key={tipo.id} 
-                  tipoId={tipo.id} 
-                  filteredContent={contentForType}
-                />
-              );
-            })}
-          {!hayResultados && (
-            <View style={{ padding: 40 }}>
-              <TextPressStart2P style={{ color: Colors.blanco, textAlign: 'center', fontSize: 16 }}>
-                No hay resultados que coincidan con los filtros seleccionados.
-              </TextPressStart2P>
-            </View>
-          )}
+          {tiposAMostrar.map((tipo) => (
+            <AudioVisualScroll
+              key={tipo.id}
+              tipoId={tipo.id}
+              filteredContent={getFilteredContentType(tipo.id)}
+            />
+          ))}
         </View>
       </ScrollView>
 
