@@ -1,9 +1,11 @@
 import Colors from '@/constants/Colors';
 import { useAudioVisual } from '@/src/context/ContextoAudioVisual';
+import { useAuth } from '@/src/context/ContextoAuth';
 import { ROUTES } from "@/src/navigation/routes";
 import React, { useMemo, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { AuthModal } from "./componentesHome/AuthModal";
 import { FilterModal, FilterOptions } from "./componentesHome/FilterModal";
 import { AudioVisualScroll } from "./componentesHome/AudioVisualScroll";
 import { GameButton } from "./componentesHome/GameButton";
@@ -11,8 +13,10 @@ import { HomeHeader } from "./componentesHome/HomeHeader";
 
 export function HomeScreen() {
   const { tipos, filtrarContenidos } = useAudioVisual();
+  const { session, cerrarSesion } = useAuth();
 
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
+  const [isAuthModalVisible, setIsAuthModalVisible] = useState(false);
   const [filters, setFilters] = useState<FilterOptions>({
     seleccionarTipos: [],
     seleccionarGeneros: []
@@ -46,10 +50,19 @@ export function HomeScreen() {
     setFilters(newFilters);
   };
 
+  const handleLogout = async () => {
+    await cerrarSesion();
+  };
+
   return (
     <SafeAreaView edges={['top']} style={styles.screenContainer}>
       <ScrollView style={styles.screenContainer}>
-        <HomeHeader onFilterPress={handleOpenFilterModal} />
+        <HomeHeader
+          onFilterPress={handleOpenFilterModal}
+          onAuthPress={() => setIsAuthModalVisible(true)}
+          onLogoutPress={handleLogout}
+          sesionIniciada={!!session}
+        />
         <View style={styles.buttonRow}>
           <GameButton
             title="Desafío del Ahorcado"
@@ -80,6 +93,11 @@ export function HomeScreen() {
         onClose={handleCloseFilterModal}
         onApplyFilters={handleApplyFilters}
         initialFilters={filters}
+      />
+
+      <AuthModal
+        visible={isAuthModalVisible}
+        onClose={() => setIsAuthModalVisible(false)}
       />
     </SafeAreaView>
   );

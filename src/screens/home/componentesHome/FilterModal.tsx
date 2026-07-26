@@ -3,7 +3,7 @@ import Colors from '@/constants/Colors';
 import { useAudioVisual } from '@/src/context/ContextoAudioVisual';
 import { MaterialIcons } from '@expo/vector-icons';
 import React, { useState, useEffect } from 'react';
-import { Modal, Platform, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Modal, Platform, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { TextPressStart2P } from '@/components/TextPressStart2P';
 
 const isMobile = Platform.OS === "android" || Platform.OS === "ios";
@@ -75,10 +75,12 @@ export function FilterModal({ visible, onClose, onApplyFilters, initialFilters }
       visible={visible}
       transparent
       animationType="fade"
-      onRequestClose={onClose}
+      onRequestClose={handleCancel}
     >
-      <View style={styles.overlay}>
-        <View style={styles.modalContainer}>
+      <TouchableWithoutFeedback onPress={handleCancel}>
+        <View style={styles.overlay}>
+          <TouchableWithoutFeedback onPress={() => {}}>
+            <View style={styles.modalContainer}>
           {/* Header */}
           <View style={styles.header}>
             <TextPressStart2P style={styles.title}>Filter Contenido</TextPressStart2P>
@@ -176,9 +178,11 @@ export function FilterModal({ visible, onClose, onApplyFilters, initialFilters }
                 textSize={isMobile ? 10 : 12}
               />
             </View>
-          </View>
+            </View>
+            </View>
+          </TouchableWithoutFeedback>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     </Modal>
   );
 }

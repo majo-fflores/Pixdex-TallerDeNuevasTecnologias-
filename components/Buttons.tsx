@@ -65,7 +65,7 @@ export function Buttons({
       activeOpacity={0.7}>
       <View style={styles.buttonContent}>
         {showIcon && (<MaterialIcons name={iconName} size={iconSize} color={iconColor} style={styles.icon} />)}
-        <TextPressStart2P style={textStyles}> {titulo} </TextPressStart2P>
+        <TextPressStart2P style={textStyles}>{titulo}</TextPressStart2P>
       </View>
     </TouchableOpacity>
   );
@@ -74,14 +74,17 @@ export function Buttons({
 const styles = StyleSheet.create({
   button: {
     borderStyle: 'solid',
+    alignSelf: 'flex-start',
   },
   buttonContent: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    flexWrap: 'nowrap',
   },
   buttonText: {
     textAlign: 'center',
+    flexShrink: 0,
   },
   icon: {
     marginRight: 8,
