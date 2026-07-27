@@ -5,14 +5,12 @@ import { Buttons } from "@/components/Buttons";
 import Colors from "@/constants/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export function AhorcadoFin({ gano, titulo, onVolver, puntaje }: { gano: boolean, titulo: string, onVolver: () => void, puntaje: number }) {
+export function AhorcadoFin({ titulo, onVolver, puntaje }: { titulo: string, onVolver: () => void, puntaje: number }) {
   return (
     <SafeAreaView edges={['top', 'bottom']} style={styles.safeArea}>
       <View style={styles.container}>
         <TextPressStart2P style={styles.titulo}>¡Juego terminado!</TextPressStart2P>
-        <TextPressStart2P style={styles.resultado}>
-          {gano ? "¡Felicidades, adivino todo el catalogo!!!" : "GAME OVER!!"}
-        </TextPressStart2P>
+        <TextPressStart2P style={styles.resultado}>GAME OVER!!</TextPressStart2P>
         <TextPressStart2P style={styles.puntajeFinal}>Puntaje Final: {puntaje}</TextPressStart2P>
         <TextPressStart2P style={styles.tituloCorrecto}>El título era: {titulo}</TextPressStart2P>
         <Buttons

@@ -1,5 +1,5 @@
-import { IPuntuacion, obtenerTop10, suscribirTop10 } from '@/src/services/puntuaciones';
 import { useEffect, useState } from 'react';
+import { IPuntuacion, obtenerTop10, suscribirTop10 } from './puntuaciones';
 
 export function useTopPuntuaciones() {
   const [puntuaciones, setPuntuaciones] = useState<IPuntuacion[]>([]);

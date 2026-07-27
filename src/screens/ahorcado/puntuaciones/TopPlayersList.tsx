@@ -1,8 +1,8 @@
 import { TextPressStart2P } from '@/components/TextPressStart2P';
 import Colors from '@/constants/Colors';
-import { IPuntuacion } from '@/src/services/puntuaciones';
 import React from 'react';
 import { ActivityIndicator, Platform, StyleSheet, View } from 'react-native';
+import { IPuntuacion } from './puntuaciones';
 
 interface TopPlayersListProps {
   puntuaciones: IPuntuacion[];

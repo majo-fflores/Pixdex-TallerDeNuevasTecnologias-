@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect, useRef, useCallback } from "react"
 import { View, StyleSheet, ScrollView, Platform } from "react-native";
 import { useAudioVisual } from "@/src/context/ContextoAudioVisual";
 import { useAuth } from "@/src/context/ContextoAuth";
-import { guardarPuntaje } from "@/src/services/puntuaciones";
+import { guardarPuntaje } from "@/src/screens/ahorcado/puntuaciones/puntuaciones";
 import { ROUTES } from "@/src/navigation/routes";
 import { AhorcadoHeader } from "./componentesAhorcado/AhorcadoHeader";
 import { AhorcadoImagen } from "./componentesAhorcado/AhorcadoImagen";
@@ -29,7 +29,6 @@ export function AhorcadoScreen() {
   const [mostrarModalLetra, setMostrarModalLetra] = useState(false);
   const [juegoTerminado, setJuegoTerminado] = useState(false);
   const [inputTitulo, setInputTitulo] = useState("");
-  const [gano, setGano] = useState(false);
   const [puntaje, setPuntaje] = useState(0);
   const [snackbar, setSnackbar] = useState(false);
   const [snackbarError, setSnackbarError] = useState(false);
@@ -79,8 +78,8 @@ export function AhorcadoScreen() {
         setLetrasUsadas([]);
         setInputTitulo("");
       } else {
-        setGano(true);
-        setJuegoTerminado(true);
+        setLetrasAdivinadas([]);
+        setLetrasUsadas([]);
       }
     } else {
       const nuevasVidas = vidas - 1;
@@ -115,8 +114,8 @@ export function AhorcadoScreen() {
           setLetrasAdivinadas([]);
           setLetrasUsadas([]);
         } else {
-          setGano(true);
-          setJuegoTerminado(true);
+          setLetrasAdivinadas([]);
+          setLetrasUsadas([]);
         }
       }
     } else {
@@ -130,10 +129,10 @@ export function AhorcadoScreen() {
   };
 
   useEffect(() => {
-    if (vidas <= 0 || indice >= contenidosAleatorios.length) {
+    if (vidas <= 0) {
       setJuegoTerminado(true);
     }
-  }, [vidas, indice, contenidosAleatorios.length]);
+  }, [vidas]);
 
   useEffect(() => {
     if (juegoTerminado) {
@@ -155,7 +154,6 @@ export function AhorcadoScreen() {
   if (juegoTerminado) {
     return (
       <AhorcadoFin
-        gano={gano}
         titulo={contenidoActual.nombre}
         onVolver={handleVolverLeaderboard}
         puntaje={puntaje}
