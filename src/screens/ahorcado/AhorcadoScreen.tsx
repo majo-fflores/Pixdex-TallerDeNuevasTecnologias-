@@ -15,6 +15,12 @@ import { Buttons } from "@/components/Buttons";
 import Colors from "@/constants/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TextPressStart2P } from "@/components/TextPressStart2P";
+import {
+  calcularProgreso,
+  letraEstaEnTitulo,
+  titulosCoinciden,
+  tituloLetrasAdivinadas,
+} from "./utilidadesTitulo";
 
 export function AhorcadoScreen() {
   const { contenidos } = useAudioVisual();
@@ -54,20 +60,15 @@ export function AhorcadoScreen() {
 
   const contenidoActual = contenidosAleatorios[indice];
 
-  // Progreso: array de letras y guiones bajos
   const progreso = useMemo(() => {
     if (!contenidoActual) return [];
-    return contenidoActual.nombre.split("").map(letra =>
-      letra === " " || letrasAdivinadas.includes(letra.toUpperCase())
-        ? letra
-        : "_"
-    );
+    return calcularProgreso(contenidoActual.nombre, letrasAdivinadas);
   }, [contenidoActual, letrasAdivinadas]);
 
   // Logica de adivinar titulo
   const handleGuessTitle = () => {
     if (!contenidoActual) return;
-    if (inputTitulo.trim().toLowerCase() === contenidoActual.nombre.trim().toLowerCase()) {
+    if (titulosCoinciden(inputTitulo, contenidoActual.nombre)) {
       setPuntaje(p => p + 1);
       setSnackbar(true);
       setTimeout(() => setSnackbar(false), 2000);
@@ -98,13 +99,12 @@ export function AhorcadoScreen() {
     const upper = letra.toUpperCase();
     if (letrasUsadas.includes(upper)) return;
     setLetrasUsadas(prev => [...prev, upper]);
-    if (contenidoActual.nombre.toUpperCase().includes(upper)) {
+    if (letraEstaEnTitulo(contenidoActual.nombre, upper)) {
       setLetrasAdivinadas(prev => [...prev, upper]);
-      // Si ya adivino todo, termina el juego o pasa al siguiente
-      const todasAdivinadas = contenidoActual.nombre
-        .toUpperCase()
-        .split("")
-        .every(l => l === " " || [...letrasAdivinadas, upper].includes(l));
+      const todasAdivinadas = tituloLetrasAdivinadas(
+        contenidoActual.nombre,
+        [...letrasAdivinadas, upper]
+      );
       if (todasAdivinadas) {
         setPuntaje(p => p + 1);
         setSnackbar(true);

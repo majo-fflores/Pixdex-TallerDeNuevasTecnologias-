@@ -89,7 +89,7 @@ Jugador pierde/sale del juego
 
 ### Decisiones de diseño
 
-1. **Tabla `puntuaciones`:** almacena cada partida jugada (no solo la mejor por usuario). Campos: `user_id`, `nombre_jugador` (alias o email), `puntaje`, `created_at`.
+1. **Tabla `puntuaciones`:** almacena el puntaje de cada partida jugada. En el ranking se **acumulan por usuario** (`user_id`), de modo que cada jugador aparece una sola vez con la suma total de sus puntos.
 
 2. **Top 10:** consulta ordenada por puntaje descendente, limitada a 10 registros. Si hay empate, gana el más antiguo (`created_at ASC`).
 

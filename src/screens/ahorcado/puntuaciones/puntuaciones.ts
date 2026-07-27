@@ -10,17 +10,34 @@ export interface IPuntuacion {
 export async function obtenerTop10(): Promise<IPuntuacion[]> {
   const { data, error } = await supabase
     .from('puntuaciones')
-    .select('id, nombre_jugador, puntaje, created_at')
-    .order('puntaje', { ascending: false })
-    .order('created_at', { ascending: true })
-    .limit(10);
+    .select('user_id, nombre_jugador, puntaje, created_at');
 
   if (error) {
     console.error('Error al obtener top 10:', error.message);
     return [];
   }
 
-  return data ?? [];
+  if (!data) return [];
+
+  const acumuladoPorUsuario = new Map<string, IPuntuacion>();
+
+  for (const fila of data) {
+    const existente = acumuladoPorUsuario.get(fila.user_id);
+    if (existente) {
+      existente.puntaje += fila.puntaje;
+    } else {
+      acumuladoPorUsuario.set(fila.user_id, {
+        id: fila.user_id,
+        nombre_jugador: fila.nombre_jugador,
+        puntaje: fila.puntaje,
+        created_at: fila.created_at,
+      });
+    }
+  }
+
+  return Array.from(acumuladoPorUsuario.values())
+    .sort((a, b) => b.puntaje - a.puntaje)
+    .slice(0, 10);
 }
 
 export async function guardarPuntaje(
