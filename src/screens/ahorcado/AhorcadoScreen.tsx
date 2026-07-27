@@ -21,6 +21,7 @@ import {
   titulosCoinciden,
   tituloLetrasAdivinadas,
 } from "./utilidadesTitulo";
+import { contenedorAhorcadoWeb } from "./estilosLayoutWeb";
 
 export function AhorcadoScreen() {
   const { contenidos } = useAudioVisual();
@@ -164,38 +165,40 @@ export function AhorcadoScreen() {
   return (
     <SafeAreaView edges={['top']} style={styles.screenContainer}>
       <ScrollView style={styles.scroll} contentContainerStyle={styles.container} bounces={false}>
-        <AhorcadoHeader
-          vidas={vidas}
-          puntaje={puntaje}
-          nombreJugador={obtenerNombreJugador()}
-          onExit={handleExit}
-        />
-        <View style={styles.cuadroGris}>
-          <View style={styles.botonesRow}>
-            <View style={styles.botonContainer}>
-              <Buttons
-                titulo="GUESS TITLE"
-                onPress={() => setMostrarModalTitulo(true)}
-                backgroundColor={Colors.purpura}
-                showIcon={false}
-                textSize={12}
-                padding={10}
-              />
+        <View style={contenedorAhorcadoWeb}>
+          <AhorcadoHeader
+            vidas={vidas}
+            puntaje={puntaje}
+            nombreJugador={obtenerNombreJugador()}
+            onExit={handleExit}
+          />
+          <View style={styles.cuadroGris}>
+            <View style={styles.botonesRow}>
+              <View style={styles.botonContainer}>
+                <Buttons
+                  titulo="GUESS TITLE"
+                  onPress={() => setMostrarModalTitulo(true)}
+                  backgroundColor={Colors.purpura}
+                  showIcon={false}
+                  textSize={12}
+                  padding={10}
+                />
+              </View>
+              <View style={styles.botonContainer}>
+                <Buttons
+                  titulo="GUESS LETTER"
+                  onPress={() => setMostrarModalLetra(true)}
+                  backgroundColor={Colors.purpura}
+                  showIcon={false}
+                  textSize={12}
+                  padding={10}
+                />
+              </View>
             </View>
-            <View style={styles.botonContainer}>
-              <Buttons
-                titulo="GUESS LETTER"
-                onPress={() => setMostrarModalLetra(true)}
-                backgroundColor={Colors.purpura}
-                showIcon={false}
-                textSize={12}
-                padding={10}
-              />
+            <AhorcadoImagen url={contenidoActual.imageUrl} />
+            <View style={styles.rayitasBox}>
+              <AhorcadoProgreso progreso={progreso} />
             </View>
-          </View>
-          <AhorcadoImagen url={contenidoActual.imageUrl} />
-          <View style={styles.rayitasBox}>
-            <AhorcadoProgreso progreso={progreso} />
           </View>
         </View>
         <ModalGuessTitle
@@ -277,12 +280,12 @@ const styles = StyleSheet.create({
   },
   cuadroGris: {
     width: "100%",
-    maxWidth: Platform.OS === "web" ? 700 : 900,
+    maxWidth: Platform.OS === "web" ? undefined : 900,
     backgroundColor: Colors.fondo,
     borderWidth: 5,
     borderColor: Colors.grisOscuro,
     padding: Platform.OS === "web" ? 30 : 20,
-    marginTop: Platform.OS === "web" ? 30 : 5,
+    marginTop: Platform.OS === "web" ? 16 : 5,
     marginBottom: Platform.OS === "web" ? 30 : 5,
     alignItems: "center",
   },

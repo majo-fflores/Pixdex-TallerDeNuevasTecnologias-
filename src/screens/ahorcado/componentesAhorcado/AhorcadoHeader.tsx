@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet, Platform, Text } from "react-native";
 import { Buttons } from "@/components/Buttons";
 import Colors from "@/constants/Colors";
-import AntDesign from '@expo/vector-icons/AntDesign';
+import { MaterialIcons } from "@expo/vector-icons";
 
 export function AhorcadoHeader({
   vidas,
@@ -35,8 +35,8 @@ export function AhorcadoHeader({
         {[...Array(maxVidas)].map((_, i) => (
           <View key={i} style={styles.corazon}>
             {i < vidas
-              ? <AntDesign name="heart" size={20} color={Colors.purpuraClaro} />
-              : <AntDesign name="hearto" size={20} color={Colors.grisOscuro} />
+              ? <MaterialIcons name="favorite" size={20} color={Colors.purpuraClaro} />
+              : <MaterialIcons name="favorite-border" size={20} color={Colors.purpuraClaro} />
             }
           </View>
         ))}

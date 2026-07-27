@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import { StatusBar, StyleSheet, View } from "react-native";
+import { Platform, StatusBar, StyleSheet, View } from "react-native";
 import { Buttons } from "../../../../components/Buttons";
 
 export default function DetailHeader() {
@@ -17,10 +17,10 @@ export default function DetailHeader() {
 
 }
 
-// Styles
 const styles = StyleSheet.create({
     contenedorHeader: {
-        paddingBottom: 20,
+        width: "100%",
         alignItems: "flex-start",
+        marginBottom: Platform.OS === "web" ? 16 : 8,
     }
 });

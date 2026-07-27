@@ -4,7 +4,7 @@ import Tags from "@/components/Tags";
 import { TextPressStart2P } from "@/components/TextPressStart2P";
 import Colors from "@/constants/Colors";
 import { useAudioVisual } from "@/src/context/ContextoAudioVisual";
-import { Platform, StyleSheet, Text, useWindowDimensions, View } from "react-native";
+import { Platform, StyleSheet, Text, View } from "react-native";
 import { DetailScreenProps } from "../DetailScreen";
 
 
@@ -16,13 +16,9 @@ export default function CardDetail({ audioVisualId }: DetailScreenProps) {
     const contenidoInfo =  getContenidoId(Number(audioVisualId))
     const tipo = contenidoInfo?getTipoId(contenidoInfo.tipoId):undefined
     const generos = contenidoInfo?getGenerosContenido(contenidoInfo):[];
-
-    const { width: screenWidth } = useWindowDimensions();
-    const widthFactor = Platform.OS === 'web' ? 0.4 : 0.9;
-    const CARD_WIDTH = screenWidth * widthFactor;
     
     return (
-        <View style={[styles.contenedor, { width: CARD_WIDTH }]}>
+        <View style={styles.contenedor}>
             {contenidoInfo && <Imagenes url={String(contenidoInfo.imageUrl)}/>}
             <TextPressStart2P style={styles.tituloCard}>
                 {contenidoInfo?.nombre}
@@ -52,6 +48,7 @@ let tituloSize = 36
 // Styles
 const styles = StyleSheet.create({
     contenedor: {
+        width: "100%",
         borderWidth: 4,
         borderColor: Colors.grisOscuro,
         flex: 1,

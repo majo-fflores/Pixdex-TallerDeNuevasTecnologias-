@@ -28,7 +28,7 @@ export function AhorcadoHomeHeader() {
 
 const styles = StyleSheet.create({
   header: {
-    width: Platform.OS === "web" ? 500 : "100%",
+    width: "100%",
     alignItems: "flex-start",
     marginBottom: Platform.OS === "web" ? 20 : 5,
   },
