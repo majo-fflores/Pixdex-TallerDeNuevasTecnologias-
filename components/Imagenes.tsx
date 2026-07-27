@@ -4,14 +4,16 @@ import { StyleSheet } from "react-native";
 
 
 interface ImagenProps {
-    url: string
+    url: string | number;
 }
 
 export default function Imagen({ url }: ImagenProps) {
+    const source = typeof url === 'number' ? url : { uri: url };
+
     return (
         <Image
             style={styles.stylesImage}
-            source={{ uri: url }}
+            source={source}
             contentFit="cover"
             cachePolicy="disk"
             transition={300}

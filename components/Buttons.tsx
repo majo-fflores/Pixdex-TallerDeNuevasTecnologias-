@@ -23,6 +23,7 @@ interface ButtonsProps {
   borderLeftColor?: string;
   borderBottomColor?: string;
   borderRightColor?: string;
+  centrado?: boolean;
 }
 
 export function Buttons({
@@ -41,10 +42,12 @@ export function Buttons({
   borderLeftColor = Colors.purpuraClaro,
   borderBottomColor = Colors.purpuraOscuro,
   borderRightColor = Colors.purpuraOscuro,
+  centrado = false,
 }: ButtonsProps) {
 
   const buttonStyles = [
     styles.button,
+    centrado && styles.buttonCentrado,
     {
       backgroundColor,
       padding,
@@ -75,6 +78,9 @@ const styles = StyleSheet.create({
   button: {
     borderStyle: 'solid',
     alignSelf: 'flex-start',
+  },
+  buttonCentrado: {
+    alignSelf: 'center',
   },
   buttonContent: {
     flexDirection: 'row',

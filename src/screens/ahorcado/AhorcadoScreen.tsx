@@ -1,6 +1,9 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect, useRef, useCallback } from "react";
 import { View, StyleSheet, ScrollView, Platform } from "react-native";
 import { useAudioVisual } from "@/src/context/ContextoAudioVisual";
+import { useAuth } from "@/src/context/ContextoAuth";
+import { guardarPuntaje } from "@/src/services/puntuaciones";
+import { ROUTES } from "@/src/navigation/routes";
 import { AhorcadoHeader } from "./componentesAhorcado/AhorcadoHeader";
 import { AhorcadoImagen } from "./componentesAhorcado/AhorcadoImagen";
 import { AhorcadoProgreso } from "./componentesAhorcado/AhorcadoProgreso";
@@ -15,6 +18,7 @@ import { TextPressStart2P } from "@/components/TextPressStart2P";
 
 export function AhorcadoScreen() {
   const { contenidos } = useAudioVisual();
+  const { user, obtenerNombreJugador } = useAuth();
   const router = useRouter();
 
   const [indice, setIndice] = useState(0);
@@ -29,6 +33,16 @@ export function AhorcadoScreen() {
   const [puntaje, setPuntaje] = useState(0);
   const [snackbar, setSnackbar] = useState(false);
   const [snackbarError, setSnackbarError] = useState(false);
+
+  const puntajeGuardadoRef = useRef(false);
+
+  const finalizarYGuardar = useCallback(async (puntajeFinal: number) => {
+    if (puntajeGuardadoRef.current || puntajeFinal <= 0 || !user) return;
+    const nombre = obtenerNombreJugador();
+    if (!nombre) return;
+    puntajeGuardadoRef.current = true;
+    await guardarPuntaje(user.id, nombre, puntajeFinal);
+  }, [user, obtenerNombreJugador]);
 
   const contenidosAleatorios = useMemo(() => {
     const arr = [...contenidos];
@@ -121,8 +135,20 @@ export function AhorcadoScreen() {
     }
   }, [vidas, indice, contenidosAleatorios.length]);
 
-  const handleVolverHome = () => {
-    router.replace("/");
+  useEffect(() => {
+    if (juegoTerminado) {
+      finalizarYGuardar(puntaje);
+    }
+  }, [juegoTerminado, puntaje, finalizarYGuardar]);
+
+  const handleExit = async () => {
+    await finalizarYGuardar(puntaje);
+    router.replace(ROUTES.AHORCADO_HOME);
+  };
+
+  const handleVolverLeaderboard = async () => {
+    await finalizarYGuardar(puntaje);
+    router.replace(ROUTES.AHORCADO_HOME);
   };
 
   if (!contenidoActual) return null;
@@ -131,7 +157,7 @@ export function AhorcadoScreen() {
       <AhorcadoFin
         gano={gano}
         titulo={contenidoActual.nombre}
-        onVolver={handleVolverHome}
+        onVolver={handleVolverLeaderboard}
         puntaje={puntaje}
       />
     );
@@ -140,7 +166,12 @@ export function AhorcadoScreen() {
   return (
     <SafeAreaView edges={['top']} style={styles.screenContainer}>
       <ScrollView style={styles.scroll} contentContainerStyle={styles.container} bounces={false}>
-        <AhorcadoHeader vidas={vidas} puntaje={puntaje} />
+        <AhorcadoHeader
+          vidas={vidas}
+          puntaje={puntaje}
+          nombreJugador={obtenerNombreJugador()}
+          onExit={handleExit}
+        />
         <View style={styles.cuadroGris}>
           <View style={styles.botonesRow}>
             <View style={styles.botonContainer}>
@@ -164,7 +195,7 @@ export function AhorcadoScreen() {
               />
             </View>
           </View>
-          <AhorcadoImagen url={String(contenidoActual.imageUrl)} />
+          <AhorcadoImagen url={contenidoActual.imageUrl} />
           <View style={styles.rayitasBox}>
             <AhorcadoProgreso progreso={progreso} />
           </View>

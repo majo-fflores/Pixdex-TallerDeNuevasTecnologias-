@@ -4,11 +4,13 @@ import { Buttons } from "@/components/Buttons";
 import Colors from "@/constants/Colors";
 import { useRouter } from "expo-router";
 
+import { ROUTES } from "@/src/navigation/routes";
+
 export function AhorcadoHomeHeader() {
   const router = useRouter();
   const handleBack = () => {
-    router.back();
-};
+    router.replace(ROUTES.HOME);
+  };
   return (
     <View style={styles.header}>
       <Buttons

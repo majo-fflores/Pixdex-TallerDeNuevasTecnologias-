@@ -2,22 +2,27 @@ import React from "react";
 import { View, StyleSheet, Platform, Text } from "react-native";
 import { Buttons } from "@/components/Buttons";
 import Colors from "@/constants/Colors";
-import { useRouter } from "expo-router";
 import AntDesign from '@expo/vector-icons/AntDesign';
 
-export function AhorcadoHeader({ vidas, puntaje }: { vidas: number; puntaje: number }) {
-  const router = useRouter();
+export function AhorcadoHeader({
+  vidas,
+  puntaje,
+  nombreJugador,
+  onExit,
+}: {
+  vidas: number;
+  puntaje: number;
+  nombreJugador: string | null;
+  onExit: () => void;
+}) {
   const maxVidas = 5;
-  const handleBack = () => {
-    router.replace("/");
-  };
+
   return (
     <View style={styles.header}>
-      {/* Botón EXIT */}
       <View style={styles.exitButtonContainer}>
         <Buttons
           titulo="EXIT"
-          onPress={handleBack}
+          onPress={onExit}
           backgroundColor={Colors.purpura}
           showIcon={true}
           iconName="arrow-back"
@@ -25,8 +30,7 @@ export function AhorcadoHeader({ vidas, puntaje }: { vidas: number; puntaje: num
           padding={8}
         />
       </View>
-      
-      {/* Contenedor central para las vidas */}
+
       <View style={styles.vidasContainer}>
         {[...Array(maxVidas)].map((_, i) => (
           <View key={i} style={styles.corazon}>
@@ -37,9 +41,11 @@ export function AhorcadoHeader({ vidas, puntaje }: { vidas: number; puntaje: num
           </View>
         ))}
       </View>
-      
-      {/* Score */}
+
       <View style={styles.scoreContainer}>
+        {nombreJugador && (
+          <Text style={styles.nombreText} numberOfLines={1}>{nombreJugador}</Text>
+        )}
         <Text style={styles.puntajeText}>Score: {puntaje}</Text>
       </View>
     </View>
@@ -69,9 +75,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scoreContainer: {
-    width: 80, 
+    minWidth: 80,
+    maxWidth: 120,
     justifyContent: "flex-end",
     alignItems: "flex-end",
+  },
+  nombreText: {
+    color: Colors.blanco,
+    fontSize: 10,
+    textAlign: "right",
+    marginBottom: 2,
   },
   puntajeText: {
     color: Colors.blanco,

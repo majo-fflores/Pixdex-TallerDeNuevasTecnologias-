@@ -10,6 +10,7 @@ interface AuthContextoDato {
   iniciarSesion: (identificador: string, password: string) => Promise<string | null>;
   registrarse: (alias: string, email: string, password: string) => Promise<string | null>;
   cerrarSesion: () => Promise<void>;
+  obtenerNombreJugador: () => string | null;
 }
 
 const AuthContext = createContext<AuthContextoDato | undefined>(undefined);
@@ -120,6 +121,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setAlias(null);
   };
 
+  const obtenerNombreJugador = (): string | null => {
+    if (!user) return null;
+    return alias ?? user.email ?? null;
+  };
+
   const contextValue: AuthContextoDato = {
     session,
     user,
@@ -128,6 +134,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     iniciarSesion,
     registrarse,
     cerrarSesion,
+    obtenerNombreJugador,
   };
 
   return (
