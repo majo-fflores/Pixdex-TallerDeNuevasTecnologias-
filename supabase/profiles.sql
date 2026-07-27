@@ -1,5 +1,3 @@
--- Ejecutar en Supabase → SQL Editor
-
 create table if not exists public.profiles (
   id uuid references auth.users on delete cascade primary key,
   alias text unique not null,

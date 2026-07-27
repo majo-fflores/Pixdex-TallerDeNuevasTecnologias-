@@ -1,5 +1,3 @@
--- Ejecutar en Supabase → SQL Editor (después de profiles.sql)
-
 create table if not exists public.puntuaciones (
   id uuid default gen_random_uuid() primary key,
   user_id uuid references auth.users on delete cascade not null,
@@ -23,7 +21,6 @@ create policy "Usuario logueado guarda puntaje"
   on public.puntuaciones for insert
   with check (auth.uid() = user_id);
 
--- Habilitar Realtime (también activar la tabla en Database → Replication)
 alter table public.puntuaciones replica identity full;
 
 alter publication supabase_realtime add table public.puntuaciones;
